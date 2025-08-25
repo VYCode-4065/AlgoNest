@@ -1,0 +1,70 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+logs
+*.log
+*.log.*
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Runtime data
+lib-cov
+coverage
+.nyc_output
+.grunt
+bower_components
+
+# Debug files
+.DS_Store
+*.sublime-workspace
+*.sublime-project
+
+# Build outputs
+dist/
+build/
+tmp/
+temp/
+
+# TypeScript
+*.tsbuildinfo
+
+# IDE/editor configs
+.vscode/
+.idea/
+*.swp
+
+# Optional npm cache
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Optional coverage folders
+coverage/
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+
+# PM2 logs and dumps
+.pm2/
+
+# Mac system files
+.DS_Store

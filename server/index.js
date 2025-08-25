@@ -1,0 +1,36 @@
+import express from 'express'
+import cors from 'cors'
+import { configDotenv } from 'dotenv'
+import dbConnect from './src/config/db.config.js'
+import cookieParser from 'cookie-parser'
+import userRouter from './src/routes/user.route.js'
+
+configDotenv({})
+
+const app = express()
+
+
+
+app.use(express.json());
+app.use(cookieParser());
+
+const corsOptions = {
+    origin: ["http://localhost:5173"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true, // allow cookies/JWT in requests
+};
+
+app.use(cors(corsOptions))
+
+app.use('/api/v1/user', userRouter)
+
+app.use((req, res) => {
+    res.send("<h1>This is backend part !</h1>")
+})
+
+dbConnect().then(() => app.listen(process.env.PORT || 3000, () => {
+    console.log(`Server running at ${process.env.PORT} successfully !`)
+})
+
+)
