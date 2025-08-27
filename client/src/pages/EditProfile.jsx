@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { FaPencilAlt } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
+import { useUpdateProfileMutation } from "../store/api/authApi";
+import toast from "react-hot-toast";
 
-const EditProfile = ({ close }) => {
-  const handleImage = (e) => {
-    console.log("something");
-    // console.log(e.target.files[0]);
-  };
+const EditProfile = ({ close, userData }) => {
+  const [updateData, setUpdateData] = useState({
+    name: userData?.name,
+    email: userData?.email,
+    userRole: userData?.userRole,
+  });
+
+  const [profilePic, setProfilePic] = useState("");
 
   const [active, setActive] = useState(false);
 
@@ -16,12 +21,54 @@ const EditProfile = ({ close }) => {
       close();
     }, 300);
   };
+
   useEffect(() => {
     const tId = setTimeout(() => {
       setActive(true);
     }, 10);
     return () => clearTimeout(tId);
   }, []);
+
+  const [updateProfile, { data, isLoading, isSuccess, error, isError }] =
+    useUpdateProfileMutation();
+
+  const onPicChange = (e) => {
+    const file = e.target.files[0];
+    setProfilePic(file);
+  };
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+
+    const isChange = Object.keys(updateData).some(
+      (val) => updateData[val] !== userData[val]
+    );
+
+    if (!profilePic && !isChange) {
+      return toast.error("At least one field is required to update !");
+    }
+
+    try {
+      const formData = new FormData();
+
+      formData.append("name", updateData.name);
+      formData.append("email", updateData.email);
+      formData.append("userRole", updateData.userRole);
+      formData.append("profilePic", profilePic);
+
+      const response = await updateProfile(formData);
+
+      if (response?.data?.success) {
+        close();
+        return toast.success("Profile updated successfully !");
+      }
+
+      if (response?.error?.data?.error) {
+        throw response.error?.data?.message;
+      }
+    } catch (error) {
+      toast.error(error);
+    }
+  };
 
   return (
     <div
@@ -30,7 +77,7 @@ const EditProfile = ({ close }) => {
       } duration-300`}
     >
       <div
-        className={`w-full mx-2 md:w-lg lg:w-xl bg-white rounded-lg shadow-purple-500/50 text-slate-800 `}
+        className={`w-full mx-2 md:w-lg lg:w-xl bg-white rounded-lg shadow-purple-500/50 text-slate-800  overflow-hidden`}
       >
         <div className="flex items-center justify-between px-5 py-2 font-semibold">
           <h1>Edit Profile</h1>
@@ -41,51 +88,78 @@ const EditProfile = ({ close }) => {
           />
         </div>
         <hr />
-        <div className="py-10 grid gap-2 px-2">
-          <div className="w-full px-5  bg-slate-200 py-5 rounded-lg">
+        <form
+          className="py-10 grid gap-2 px-2 bg-slate-200"
+          onSubmit={handleUpdate}
+        >
+          <div className="w-full px-5 py-2 rounded-lg">
             <h1 className="font-semibold text-slate-700">Name : </h1>
-            <h1 className="mt-2 pl-5 font-medium text-slate-800">
-              Vishal Yadav
-            </h1>
+            <input
+              name="name"
+              className="mt-2 pl-5 font-medium text-slate-800 w-full outline-none bg-slate-50 px-3 py-1 rounded-full border border-purple-400"
+              value={updateData?.name}
+              onChange={(e) => {
+                setUpdateData((prev) => {
+                  return {
+                    ...prev,
+                    [e.target.name]: e.target.value,
+                  };
+                });
+              }}
+            />
           </div>
-          <div className="w-full px-5  bg-slate-200 py-5 rounded-lg">
+          <div className="w-full px-5 py-2 rounded-lg">
             <h1 className="font-semibold text-slate-700">Email :</h1>
-            <h1 className="mt-2 pl-5 font-medium text-slate-800">
-              vishal@gmail.com
-            </h1>
+            <input
+              name="email"
+              className="mt-2 pl-5 font-medium text-slate-800  w-full outline-none bg-slate-50 px-3 py-1 rounded-full border border-purple-400"
+              value={updateData?.email}
+              onChange={(e) => {
+                setUpdateData((prev) => {
+                  return {
+                    ...prev,
+                    [e.target.name]: e.target.value,
+                  };
+                });
+              }}
+            />
           </div>
-          <div className="grid gap-3 px-5  bg-slate-200 py-5 rounded-lg">
+          
+          <div className="w-full px-5  py-2 rounded-lg ">
             <h1 className="font-semibold text-slate-700">Profile Pic :</h1>
 
-            <div className=" relative ml-2 flex h-16 w-16 items-center justify-center  rounded-full bg-purple-500 group ">
+            <div className="relative h-24 w-24 mt-4 rounded-full shadow-2xl shadow-purple-400 bg-purple-100 group overflow-hidden">
               <img
-                src="https://png.pngtree.com/png-clipart/20230817/original/pngtree-round-kid-avatar-boy-face-picture-image_8005285.png"
+                src={
+                  userData?.profilePic ||
+                  "https://png.pngtree.com/png-clipart/20230817/original/pngtree-round-kid-avatar-boy-face-picture-image_8005285.png"
+                }
                 alt=""
-                className="h-full w-full object-contain"
+                className="h-full w-full object-cover "
               />
-              {/* <FaUserAlt className="h-full w-full"/> */}
-              <div className="absolute text-white p-2 rounded-full bg-purple-500  lg:scale-0 group-hover:scale-100 transition-transform duration-300">
-                <label htmlFor="editImg" className="cursor-pointer">
-                  <FaPencilAlt />
+              <div className=" absolute top-8 left-8 p-2 bg-purple-600 rounded-full text-white transition-all scale-0 group-hover:scale-100 duration-200 ">
+                <label htmlFor="profileImage" className="cursor-pointer">
+                  <FaPencilAlt size={18} />
                 </label>
-
                 <input
-                  onChange={handleImage}
-                  type="file"
-                  accept=".jpg,.png,.jpeg,.svg"
                   className="hidden"
-                  id="editImg"
+                  name="userRole"
+                  type="file"
+                  id="profileImage"
+                  accept=".jpg,.jpeg,.png,.avif,.svg"
+                  onChange={onPicChange}
                 />
               </div>
             </div>
           </div>
           <button
-            onClick={handleClose}
-            className={`px-10 py-1  w-fit mx-auto bg-purple-500 text-white rounded-full hover:bg-purple-600 transition-all duration-300 te cursor-pointer hover:scale-105 `}
+            disabled={isLoading}
+            type="submit"
+            className={`px-10 py-2 mt-3  w-fit mx-auto bg-purple-500 text-white rounded-full hover:bg-purple-600 transition-all duration-300 te cursor-pointer hover:scale-105 `}
           >
-            Done
+            {isLoading ? "Uploading...." : "Done"}
           </button>
-        </div>
+        </form>
       </div>
     </div>
   );

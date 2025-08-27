@@ -1,5 +1,6 @@
 import { User } from "../models/user.model.js";
 import asyncHandler from "../utils/AsyncHandler.js";
+import { deleteProfilePicFromCloudinary, uploadMedia } from "../utils/cloudinary.utils.js";
 import getSession from "../utils/getSession.js";
 import responseHandler from "../utils/Response.js";
 import bcrypt from 'bcryptjs'
@@ -71,7 +72,7 @@ const logoutUserController = asyncHandler(async (req, res) => {
         return responseHandler(res, 401, "User not logged in ", {}, true)
     }
 
-    res.clearCookie("loginToken")
+    res.clearCookie("loginToken", { maxAge: 0 })
 
     return responseHandler(res, 200, "User logged out successfully !")
 })
@@ -94,9 +95,58 @@ const getUserProfileController = asyncHandler(async (req, res) => {
     return responseHandler(res, 200, "User profile fetched !", userData, false);
 
 })
+
+const updateUserProfileController = asyncHandler(async (req, res) => {
+
+    const userId = req.userId
+
+    const { name, email } = req.body ? req.body : { name: '', email: '' }
+
+    const profilePic = req.file;
+
+  
+
+
+    if (!userId) {
+        return responseHandler(res, 401, "Unauthorized access ", {}, true);
+    }
+
+    if (!name && !email && !profilePic) {
+        return responseHandler(res, 406, "Please provide at least one field to update !")
+    }
+
+    const user = await User.findById(userId)
+
+    if (!user) {
+        return responseHandler(res, 401, "User not exists with provided id !")
+    }
+
+    if (user.profilePic) {
+        const publicId = user.profilePic.split('/').pop().split('.')[0]
+        deleteProfilePicFromCloudinary(publicId)
+    }
+
+    const cloudResponse = profilePic ? await uploadMedia(profilePic.path) : ''
+
+    const profilePicUrl = profilePic ? cloudResponse.secure_url : ''
+
+
+    const updatedValue = await User.findByIdAndUpdate(userId, {
+        email: email && email,
+        name: name && name,
+        profilePic: profilePic?.path && profilePicUrl
+    }, { new: true }).select("-password")
+
+    if (!updatedValue) {
+        return responseHandler(res, 501, "Internal server error ", {}, true)
+    }
+
+    return responseHandler(res, 200, "Profile updated successfully !", updatedValue, false)
+})
 export {
     registerUserController,
     loginUserController,
     logoutUserController,
-    getUserProfileController
+    getUserProfileController,
+    updateUserProfileController
 }

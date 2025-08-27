@@ -4,6 +4,7 @@ import { configDotenv } from 'dotenv'
 import dbConnect from './src/config/db.config.js'
 import cookieParser from 'cookie-parser'
 import userRouter from './src/routes/user.route.js'
+import courseRouter from './src/routes/course.route.js'
 
 configDotenv({})
 
@@ -24,6 +25,7 @@ const corsOptions = {
 app.use(cors(corsOptions))
 
 app.use('/api/v1/user', userRouter)
+app.use('/api/v1/course', courseRouter)
 
 app.use((req, res) => {
     res.send("<h1>This is backend part !</h1>")

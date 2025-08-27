@@ -5,12 +5,15 @@ import { IoEye, IoEyeOff } from "react-icons/io5";
 import { useLoginUserMutation } from "../store/api/authApi";
 import { FaCheck } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import ForgetPassword from "../pages/ForgetPassword";
 
 const Login = ({ closeLogin }) => {
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
   });
+
+  const [forgetPassword, setForgetPassword] = useState(false);
 
   const [eyeOpen, setEyeOpen] = useState(false);
 
@@ -36,6 +39,7 @@ const Login = ({ closeLogin }) => {
         password: "",
       });
       if (res?.data?.success) {
+        localStorage.setItem("isLogin", true);
         navigate("/");
         return toast.success(res.data.message);
       }
@@ -116,7 +120,10 @@ const Login = ({ closeLogin }) => {
               Remember me
             </label>
           </div>
-          <p className="cursor-pointer text-sm font-semibold text-purple-400 hover:text-purple-500">
+          <p
+            onClick={() => setForgetPassword(true)}
+            className="cursor-pointer text-sm font-semibold text-purple-400 hover:text-purple-500"
+          >
             Forgot Password ?
           </p>
         </div>
@@ -138,6 +145,9 @@ const Login = ({ closeLogin }) => {
           </span>
         </p>
       </form>
+      {forgetPassword && (
+        <ForgetPassword close={() => setForgetPassword(false)} />
+      )}
     </div>
   );
 };

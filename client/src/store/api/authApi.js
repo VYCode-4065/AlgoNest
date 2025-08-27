@@ -4,7 +4,7 @@ import { loggedInUser, loggedOutUser } from '../../features/authSlice'
 const AUTH_BASE = "http://localhost:8080/api/v1/user/"
 const authApi = createApi({
     reducerPath: 'authApi',
-    baseQuery: fetchBaseQuery({ baseUrl: AUTH_BASE ,credentials:"include"}),
+    baseQuery: fetchBaseQuery({ baseUrl: AUTH_BASE, credentials: "include" }),
     endpoints: (builder) => ({
         registerUser: builder.mutation({
             query: (inputData) => ({
@@ -57,11 +57,21 @@ const authApi = createApi({
                 url: 'profile',
                 method: 'GET'
             }),
-        })
+            providesTags: ['api']
+        }),
+        updateProfile: builder.mutation({
+            query: (updateData) => ({
+                url: '/update',
+                method: 'PUT',
+                body: updateData,
+                credentials: 'include'
+            }),
+            invalidatesTags: ['api']
+        }),
     })
 })
 
 
-export const { useLoginUserMutation, useRegisterUserMutation, useLoggoutUserMutation, useLoadProfileQuery } = authApi
+export const { useLoginUserMutation, useRegisterUserMutation, useLoggoutUserMutation, useLoadProfileQuery, useUpdateProfileMutation } = authApi
 
 export default authApi

@@ -5,19 +5,24 @@ import AlgoNestLogo from "./Logo";
 import { FaMoon, FaSun, FaUser } from "react-icons/fa";
 import { LuLogOut } from "react-icons/lu";
 import { useSelector } from "react-redux";
-import { useLoggoutUserMutation } from "../store/api/authApi";
+import {
+  useLoadProfileQuery,
+  useLoggoutUserMutation,
+} from "../store/api/authApi";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 const Header = () => {
-  const authValue = useSelector((state) => state.auth);
   const [darkMode, setDarkMode] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(authValue?.isAuthenticated);
-  const navigate = useNavigate()
+  const [loggedIn, setLoggedIn] = useState(localStorage.getItem("isLogin"));
+
+  const navigate = useNavigate();
+
+  const { data: profileData } = useLoadProfileQuery();
 
   useEffect(() => {
-    setLoggedIn(authValue?.isAuthenticated);
-  }, [authValue]);
+    setLoggedIn(localStorage.getItem("isLogin"));
+  }, [localStorage.getItem("isLogin")]);
 
   const [logoutUser, { isError, isLoading, isSuccess, error }] =
     useLoggoutUserMutation();
@@ -26,7 +31,8 @@ const Header = () => {
       const response = await logoutUser();
 
       if (response.data.success) {
-        navigate('/')
+        localStorage.removeItem("isLogin");
+        navigate("/");
         return toast.success("User logged out successfully !");
       }
 
@@ -50,14 +56,22 @@ const Header = () => {
             {loggedIn ? (
               <div className="flex gap-2 items-center w-fit overflow-hidden  bg-white  cursor-pointer group">
                 <div
-                  className="p-2 bg-white shadow-sm my-2 inline-block  hover:shadow-purple-400/50  rounded-full "
+                  className=" h-10 w-10 bg-white shadow-sm  inline-block  hover:shadow-purple-400/50  rounded-full overflow-hidden"
                   onClickCapture={(e) => {
                     e.stopPropagation();
                   }}
                   onClick={(e) => setDarkMode((prev) => !prev)}
                   title="profile"
                 >
-                  <FaUser size={20} />
+                  {profileData?.data?.profilePic ? (
+                    <img
+                      src={profileData?.data?.profilePic}
+                      alt="profile-pic"
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <FaUser size={20} className="my-2 mx-3" />
+                  )}
                 </div>
                 <p className="text-semibold">Profile</p>
                 <div className="absolute top-16 -translate-y-[200%] group-hover:translate-y-[0] bg-gray-50/80 flex flex-col gap-1 px-4 py-2 rounded-b-lg overflow-hidden transition-transform duration-700">
@@ -66,15 +80,18 @@ const Header = () => {
                     <hr />
                     <div className="flex flex-col gap-1">
                       <Link
-                      to={`profile/${authValue?.user?._id}`}
-                      className="hover:scale-95 transition-all duration-50"
-                    >
-                      My Profile
-                    </Link>
-                      <Link to={'my-learning'} className="hover:scale-95 transition-all duration-50">
+                        to={`profile`}
+                        className="hover:scale-95 transition-all duration-50"
+                      >
+                        My Profile
+                      </Link>
+                      <Link
+                        to={"my-learning"}
+                        className="hover:scale-95 transition-all duration-50"
+                      >
                         My Learning
                       </Link>
-                      
+
                       <p
                         onClick={handleLogout}
                         className="hover:scale-95 transition-all duration-50 flex items-center gap-2"
@@ -84,6 +101,14 @@ const Header = () => {
                           <LuLogOut size={12} />
                         </span>
                       </p>
+                      {profileData?.data?.userRole === "instructor" && (
+                        <Link
+                          to={"admin"}
+                          className="hover:scale-95 transition-all duration-50"
+                        >
+                          Dashboard
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </div>

@@ -1,20 +1,54 @@
 import React, { useEffect, useState } from "react";
-import { useLoadProfileQuery } from "../store/api/authApi";
-import { FaUser, FaUserAlt } from "react-icons/fa";
+import {
+  useLoadProfileQuery,
+  useLoggoutUserMutation,
+} from "../store/api/authApi";
+import { FaPencilAlt, FaUser, FaUserAlt } from "react-icons/fa";
 import Button from "../components/Button";
 import EditProfile from "./EditProfile";
+import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Profile = () => {
-  const { data } = useLoadProfileQuery();
+  const { data: profileData, isLoading: profileLoading } =
+    useLoadProfileQuery();
 
   const [active, setActive] = useState(false);
 
   const [editProfile, setEditProfile] = useState(false);
+
   useEffect(() => {
     setTimeout(() => {
       setActive(true);
-    }, 10);
-  });
+    }, 100);
+  }, []);
+
+  const navigate = useNavigate();
+
+  const [logoutUser, { isError, isLoading, isSuccess, error }] =
+    useLoggoutUserMutation();
+  const handleLogout = async () => {
+    try {
+      const response = await logoutUser();
+
+      if (response.data.success) {
+        localStorage.removeItem("isLogin");
+        navigate("/");
+        return toast.success("User logged out successfully !");
+      }
+
+      if (response.error.data.error) {
+        throw "Unable to logout user !";
+      }
+    } catch (error) {
+      // toast.error(error);
+      console.log(error);
+    }
+
+    if (profileLoading) {
+      return <h1>Profile loading</h1>;
+    }
+  };
   return (
     <div className="relative">
       <div className="md:min-h-60 bg-gradient-to-b from-purple-400 to-purple-600  "></div>
@@ -24,24 +58,38 @@ const Profile = () => {
             active ? "scale-100" : "scale-0"
           }`}
         >
-          <div className="absolute h-32 w-32 -top-10 left-56 lg:left-95 rounded-full shadow-2xl shadow-purple-400 bg-purple-100">
+          <div className="absolute h-32 w-32 -top-10 left-56 lg:left-95 rounded-full shadow-2xl shadow-purple-400 bg-purple-100 overflow-hidden">
             <img
-              src="https://png.pngtree.com/png-clipart/20230817/original/pngtree-round-kid-avatar-boy-face-picture-image_8005285.png"
+              src={
+                profileData?.data?.profilePic ||
+                "https://png.pngtree.com/png-clipart/20230817/original/pngtree-round-kid-avatar-boy-face-picture-image_8005285.png"
+              }
               alt=""
-              className="h-full w-full object-contain"
+              className="h-full w-full object-cover"
             />
           </div>
           <div className="inline-flex items-center justify-between w-full px-5 md:px-10 py-5">
-            <p className="font-semibold text-gray-700 text-shadow-sm text-shadow-purple-200 shadow-lg cursor-pointer hover:shadow-purple-500 py-1 px-2 rounded-full transition-all duration-200 ">
+            <Link
+              to={"my-learning"}
+              className="font-semibold text-gray-700 text-shadow-sm text-shadow-purple-200 shadow-lg cursor-pointer hover:shadow-purple-500 py-1 px-2 rounded-full transition-all duration-200 "
+            >
               My Learning
-            </p>
-            <p className="font-semibold text-gray-700 text-shadow-sm text-shadow-purple-200 shadow-lg cursor-pointer hover:shadow-purple-500 py-1 px-2 rounded-full transition-all duration-200 ">
+            </Link>
+            <p
+              onClick={handleLogout}
+              className="font-semibold text-gray-700 text-shadow-sm text-shadow-purple-200 shadow-lg cursor-pointer hover:shadow-purple-500 py-1 px-2 rounded-full transition-all duration-200 "
+            >
               Logout
             </p>
           </div>
           <div className="w-full text-center mt-10 flex flex-col items-center gap-1">
-            <h1 className="text-3xl font-semibold ">Vishal Yadav</h1>
-            <p className="font-semibold ">vishal@gmail.com</p>
+            <h1 className="text-3xl font-semibold ">
+              {profileData?.data?.name}
+            </h1>
+            <p className="font-semibold ">{profileData?.data?.email}</p>
+            <p className="font-semibold ">
+              {profileData?.data?.userRole.toUpperCase()}
+            </p>
           </div>
           <div className="md:max-w-xl text-center mx-auto mt-5 flex flex-col items-center gap-4">
             <h1 className="font-bold text-xl underline shadow-lg inline-block shadow-purple-300 px-4 py-1 rounded-full ">
@@ -60,29 +108,34 @@ const Profile = () => {
           <h1 className="font-semibold border-b border-b-purple-500 w-full  text-center">
             Profile
           </h1>
-          <div className="flex h-16 w-16 items-center justify-center  rounded-full bg-purple-500">
+          <div className="flex h-16 w-16 items-center justify-center  rounded-full bg-purple-500 overflow-hidden">
             <img
-              src="https://png.pngtree.com/png-clipart/20230817/original/pngtree-round-kid-avatar-boy-face-picture-image_8005285.png"
+              src={`${
+                profileData?.data?.profilePic ||
+                "https://png.pngtree.com/png-clipart/20230817/original/pngtree-round-kid-avatar-boy-face-picture-image_8005285.png"
+              }`}
               alt=""
-              className="h-full w-full object-contain"
+              className="h-full w-full object-cover"
             />
             {/* <FaUserAlt className="h-full w-full"/> */}
           </div>
           <div className="w-full px-5 text-sm">
             <h1 className="font-semibold text-slate-700">Name</h1>
             <h1 className="mt-2 pl-5 font-medium text-slate-800">
-              Vishal Yadav
+              {profileData?.data?.name}
             </h1>
           </div>
           <div className="w-full px-5 text-sm">
             <h1 className="font-semibold text-slate-700">Email</h1>
             <h1 className="mt-2 pl-5 font-medium text-slate-800">
-              vishal@gmail.com
+              {profileData?.data?.email}
             </h1>
           </div>
           <div className="w-full px-5 text-sm">
             <h1 className="font-semibold text-slate-700">Role</h1>
-            <h1 className="mt-2 pl-5 font-medium text-slate-800">Student</h1>
+            <h1 className="mt-2 pl-5 font-medium text-slate-800">
+              {profileData?.data?.userRole?.toUpperCase()}
+            </h1>
           </div>
           <div className="w-full px-5 text-sm">
             <h1 className="font-semibold text-slate-700">Course Enrolled</h1>
@@ -98,7 +151,12 @@ const Profile = () => {
           </button>
         </div>
       </div>
-      {editProfile && <EditProfile close={() => setEditProfile(false)} />}
+      {editProfile && (
+        <EditProfile
+          userData={profileData?.data}
+          close={() => setEditProfile(false)}
+        />
+      )}
     </div>
   );
 };

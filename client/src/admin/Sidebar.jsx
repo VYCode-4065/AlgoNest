@@ -1,0 +1,26 @@
+import React from "react";
+import { Link } from "react-router-dom";
+import { LuChartNoAxesCombined, LuFolder } from "react-icons/lu";
+
+const Sidebar = () => {
+  return (
+    <div className="h-full bg-purple-400 py-10 px-3 space-y-5 border-r-2 border-r-neutral-800">
+      <Link
+        to={"admin/dashboard"}
+        className="flex items-center gap-2 text-white font-semibold shadow-lg hover:shadow-gray-100 px-3 py-1 transition-all duration-300 rounded-full"
+      >
+        <LuChartNoAxesCombined />
+        <span>Dashboard</span>
+      </Link>
+      <Link
+        to={"admin/courses"}
+        className="flex items-center gap-2 text-white font-semibold shadow-lg hover:shadow-gray-100 px-3 py-1 transition-all duration-300 rounded-full"
+      >
+        <LuFolder />
+        <span>Courses</span>
+      </Link>
+    </div>
+  );
+};
+
+export default Sidebar;

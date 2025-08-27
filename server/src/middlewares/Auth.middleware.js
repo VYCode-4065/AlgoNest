@@ -6,7 +6,6 @@ const authMiddleware = asyncHandler(async (req, res, next) => {
 
     const token = req?.cookies?.loginToken;
 
-
     if (!token) {
         return responseHandler(res, 401, "Login first to perform the tasks !");
     }
