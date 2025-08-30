@@ -1,14 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { MdClose } from "react-icons/md";
+import { useAddCourseMutation } from "../../store/api/courseApi";
+import toast from "react-hot-toast";
+import DescriptionEditor from "../../components/Description";
 
 const AddCourse = ({ close }) => {
+  const categoryList = [
+    "Frontend",
+    "Backend",
+    "Data Science",
+    "Accounting",
+    "Computer Science",
+    "Programming Language",
+    "Dev Tools",
+    "Database",
+    "Full Stack"
+  ];
   const [formData, setFormData] = useState({
-    title: "",
+    courseTitle: "",
     category: "",
-    price: "",
+    coursePrice: "",
     thumbnail: "",
-    level: "",
-    subtitle: "",
+    courseLevel: "",
+    subTitle: "",
     description: "",
     isPublished: false,
   });
@@ -38,20 +52,52 @@ const AddCourse = ({ close }) => {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Course Data:", formData);
-    alert("Course submitted successfully!");
-    setFormData({
-      title: "",
-      category: "",
-      price: "",
-      thumbnail: "",
-      level: "",
-      subtitle: "",
-      description: "",
-      isPublished: false,
+  const handleThumbnailChange = (e) => {
+    setFormData((prev) => {
+      return {
+        ...prev,
+        thumbnail: e.target.files[0],
+      };
     });
+  };
+  const [
+    addCourse,
+    { data: courseData, isLoading, isSuccess, isError, error: courseError },
+  ] = useAddCourseMutation();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const courseData = new FormData();
+
+    for (const [key, value] of Object.entries(formData)) {
+      courseData.append(key, value);
+    }
+
+    try {
+      const res = await addCourse(courseData);
+
+      console.log(res.data);
+      if (res.data?.success) {
+        setFormData({
+          courseTitle: "",
+          category: "",
+          coursePrice: "",
+          thumbnail: "",
+          courseLevel: "",
+          subTitle: "",
+          description: "",
+          isPublished: false,
+        });
+        handleClose();
+        return toast.success(res.data?.message);
+      }
+
+      if (isError) {
+        throw courseError;
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -85,8 +131,8 @@ const AddCourse = ({ close }) => {
               </label>
               <input
                 type="text"
-                name="title"
-                value={formData.title}
+                name="courseTitle"
+                value={formData.courseTitle}
                 onChange={handleChange}
                 required
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
@@ -98,14 +144,24 @@ const AddCourse = ({ close }) => {
               <label className="block text-purple-700 font-medium mb-2">
                 Category *
               </label>
-              <input
-                type="text"
+              <select
                 name="category"
                 value={formData.category}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-              />
+                className="w-full px-4 py-2 border border-purple-400 rounded-lg outline-none focus:ring-1 focus:ring-purple-500"
+              >
+                <option value="" hidden>
+                  Select Category
+                </option>
+                {categoryList.map((val, idx) => {
+                  return (
+                    <option value={val} key={idx}>
+                      {val}
+                    </option>
+                  );
+                })}
+              </select>
             </div>
 
             {/* Price */}
@@ -115,9 +171,9 @@ const AddCourse = ({ close }) => {
               </label>
               <input
                 type="text"
-                name="price"
+                name="coursePrice"
                 required
-                value={formData.price}
+                value={formData.coursePrice}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
               />
@@ -127,8 +183,8 @@ const AddCourse = ({ close }) => {
                 Course Level *
               </label>
               <select
-                name="level"
-                value={formData.level}
+                name="courseLevel"
+                value={formData.courseLevel}
                 onChange={handleChange}
                 required
                 className="w-full px-4 py-2 border border-purple-400 rounded-lg outline-none focus:ring-1 focus:ring-purple-500"
@@ -136,9 +192,9 @@ const AddCourse = ({ close }) => {
                 <option value="" hidden>
                   Select Price Level
                 </option>
-                <option value="beginner">Beginner</option>
-                <option value="medium">Medium</option>
-                <option value="advance">Advance</option>
+                <option value="Beginner">Beginner</option>
+                <option value="Medium">Medium</option>
+                <option value="Advance">Advance</option>
               </select>
             </div>
 
@@ -150,8 +206,7 @@ const AddCourse = ({ close }) => {
               <input
                 type="file"
                 name="thumbnail"
-                value={formData.thumbnail}
-                onChange={handleChange}
+                onChange={handleThumbnailChange}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
               />
             </div>
@@ -162,8 +217,8 @@ const AddCourse = ({ close }) => {
               </label>
               <input
                 type="text"
-                name="subtitle"
-                value={formData.subtitle}
+                name="subTitle"
+                value={formData.subTitle}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
               />
@@ -173,13 +228,18 @@ const AddCourse = ({ close }) => {
               <label className="block text-purple-700 font-medium mb-2">
                 Description
               </label>
-              <textarea
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-                rows="4"
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-              ></textarea>
+              <div>
+                <DescriptionEditor
+                  desData={(val) =>
+                    setFormData((prev) => {
+                      return {
+                        ...prev,
+                        description: val,
+                      };
+                    })
+                  }
+                />
+              </div>
             </div>
 
             <div className="flex items-center gap-2">
@@ -198,9 +258,10 @@ const AddCourse = ({ close }) => {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full py-3 bg-purple-600 text-white font-semibold rounded-lg shadow hover:bg-purple-700 transition"
+              disabled={isLoading}
+              className="w-full py-3 bg-purple-600 text-white font-semibold rounded-lg shadow hover:bg-purple-700 transition cursor-pointer"
             >
-              Add Course
+              {isLoading ? "Loading..." : "Add Course"}
             </button>
           </form>
         </div>

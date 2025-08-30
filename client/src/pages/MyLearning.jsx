@@ -3,7 +3,7 @@ import React, { useState } from "react";
 const MyLearning = () => {
   const [courseData, setCourseData] = useState([]);
   return (
-    <div className="bg-slate-50  px-10 py-5">
+    <div className="bg-slate-50  px-10 py-5 h-screen">
       <div>
         <h1 className="text-2xl font-bold ">Course Enrolled</h1>
         {courseData.length ? (

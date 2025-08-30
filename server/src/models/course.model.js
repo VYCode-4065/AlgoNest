@@ -23,7 +23,7 @@ const courseSchema = new mongoose.Schema({
     courseLevel: {
         type: String,
         enum: ['Beginner', 'Medium', 'Advance'],
-        default:'Beginner'
+        default: 'Beginner'
     },
     thumbnails: {
         type: String,
@@ -49,4 +49,7 @@ const courseSchema = new mongoose.Schema({
 }, { timestamps: true })
 
 
+courseSchema.index({ courseTitle: 'text' })
+
 export const Course = mongoose.model("Course", courseSchema);
+

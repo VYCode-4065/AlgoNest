@@ -57,6 +57,14 @@ const authApi = createApi({
                 url: 'profile',
                 method: 'GET'
             }),
+            async onQueryStarted(args, { dispatch, queryFulfilled }) {
+                try {
+                    const res = await queryFulfilled
+                    dispatch(loggedInUser(res?.data?.data))
+                } catch (error) {
+                    console.log('Error at load profile api')
+                }
+            },
             providesTags: ['api']
         }),
         updateProfile: builder.mutation({

@@ -1,6 +1,6 @@
 import { User } from "../models/user.model.js";
 import asyncHandler from "../utils/AsyncHandler.js";
-import { deleteProfilePicFromCloudinary, uploadMedia } from "../utils/cloudinary.utils.js";
+import { deleteProfilePicFromCloudinary,  uploadMediaImage } from "../utils/cloudinary.utils.js";
 import getSession from "../utils/getSession.js";
 import responseHandler from "../utils/Response.js";
 import bcrypt from 'bcryptjs'
@@ -126,7 +126,7 @@ const updateUserProfileController = asyncHandler(async (req, res) => {
         deleteProfilePicFromCloudinary(publicId)
     }
 
-    const cloudResponse = profilePic ? await uploadMedia(profilePic.path) : ''
+    const cloudResponse = profilePic ? await uploadMediaImage(profilePic.path) : ''
 
     const profilePicUrl = profilePic ? cloudResponse.secure_url : ''
 

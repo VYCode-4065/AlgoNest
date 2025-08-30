@@ -50,7 +50,7 @@ const Profile = () => {
     }
   };
   return (
-    <div className="relative">
+    <div className="relative h-screen">
       <div className="md:min-h-60 bg-gradient-to-b from-purple-400 to-purple-600  "></div>
       <div className="">
         <div

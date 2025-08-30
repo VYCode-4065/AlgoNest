@@ -10,17 +10,29 @@ cloudinary.config({
     api_secret: process.env.CLOUD_API_SECRET
 })
 
-export const uploadMedia = async (file) => {
+export const uploadMediaImage = async (file) => {
     try {
 
         const uploadResponse = await cloudinary.uploader.upload(file, {
-            resource_type: 'auto'
+            resource_type: 'image'
         })
         return uploadResponse
     } catch (error) {
         console.log('error at cloudinary')
     }
 }
+export const uploadMediaVideo = async (file) => {
+    try {
+
+        const uploadResponse = await cloudinary.uploader.upload(file, {
+            resource_type: 'video'
+        })
+        return uploadResponse
+    } catch (error) {
+        console.log('error at cloudinary')
+    }
+}
+
 
 export const deleteProfilePicFromCloudinary = async (publicId) => {
     try {

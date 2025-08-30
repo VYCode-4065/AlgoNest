@@ -1,32 +1,34 @@
 import React from "react";
 
-const Card = ({imageLink,name}) => {
-  const image ="https://res.cloudinary.com/dkigyluv4/image/upload/v1729413594/rrxdvyrcxxiladzry1jb.jpg";
+const Card = ({
+  imageLink,
+  name,
+  author,
+  level,
+  price,
+  authorImage,
+  courseId,
+}) => {
+  const image =
+    "https://res.cloudinary.com/dkigyluv4/image/upload/v1729413594/rrxdvyrcxxiladzry1jb.jpg";
 
-  const title = "Mastering Docker: From Beginner to Pro";
-  const link = "/course-details/6714c14616ae690eefd23b92";
-  const author = "Vishal MernStack";
-  const authorImage ="https://res.cloudinary.com/dkigyluv4/image/upload/v1730988021/vqwqxcdhxsq4sqzhqhlq.webp";
-  const level = "Beginner";
-  const price = "₹499";
+  const link = `/course-details/${courseId}`;
   return (
     <div className="border  overflow-hidden rounded-lg  bg-purple-200/70 shadow-lg hover:shadow-purple-800 transform hover:scale-95 transition-all duration-300 w-full  md:max-w-xs">
       {/* Course Image */}
-      <div className="relative p-5">
+      <div className="relative p-5 bg-white mx-auto text-center">
         <img
           src={imageLink}
-          alt={title}
-          className="w-full h-32 object-center rounded-t-lg "
+          alt={imageLink}
+          className="w-fit inline-block mx-auto h-32 object-center bg-white rounded-lg overflow-hidden"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent rounded-t-lg"></div>
       </div>
+      <hr />
 
       {/* Card Content */}
       <div className="p-6 px-5 py-4 space-y-3">
         <a href={link}>
-          <h1 className="hover:underline font-bold text-lg truncate">
-            {name}
-          </h1>
+          <h1 className="hover:underline font-bold text-lg truncate">{name}</h1>
         </a>
 
         {/* Author + Level */}
@@ -53,7 +55,7 @@ const Card = ({imageLink,name}) => {
 
         {/* Price */}
         <div className="text-lg font-bold">
-          <span>{price}</span>
+          <span>₹{price}</span>
         </div>
       </div>
     </div>

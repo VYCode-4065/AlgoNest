@@ -11,18 +11,20 @@ import {
 } from "../store/api/authApi";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { getProfileData } from "../features/authSlice";
 
 const Header = () => {
+  const authData = useSelector(getProfileData);
+  const profileData = authData.user;
+
   const [darkMode, setDarkMode] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(localStorage.getItem("isLogin"));
+  const [loggedIn, setLoggedIn] = useState(authData.isAuthenticated);
 
   const navigate = useNavigate();
 
-  const { data: profileData } = useLoadProfileQuery();
-
   useEffect(() => {
-    setLoggedIn(localStorage.getItem("isLogin"));
-  }, [localStorage.getItem("isLogin")]);
+    setLoggedIn(authData.isAuthenticated);
+  }, [authData.isAuthenticated]);
 
   const [logoutUser, { isError, isLoading, isSuccess, error }] =
     useLoggoutUserMutation();
@@ -63,9 +65,9 @@ const Header = () => {
                   onClick={(e) => setDarkMode((prev) => !prev)}
                   title="profile"
                 >
-                  {profileData?.data?.profilePic ? (
+                  {profileData?.profilePic ? (
                     <img
-                      src={profileData?.data?.profilePic}
+                      src={profileData?.profilePic}
                       alt="profile-pic"
                       className="h-full w-full object-cover"
                     />
@@ -74,7 +76,7 @@ const Header = () => {
                   )}
                 </div>
                 <p className="text-semibold">Profile</p>
-                <div className="absolute top-16 -translate-y-[200%] group-hover:translate-y-[0] bg-gray-50/80 flex flex-col gap-1 px-4 py-2 rounded-b-lg overflow-hidden transition-transform duration-700">
+                <div className="absolute top-16 -translate-y-[200%] group-hover:translate-y-[0] bg-gray-100/80 flex flex-col gap-1 px-4 py-2 rounded-b-lg overflow-hidden transition-transform duration-700">
                   <div className="flex flex-col gap-3">
                     <h1 className="font-semibold">Profile</h1>
                     <hr />
@@ -101,7 +103,7 @@ const Header = () => {
                           <LuLogOut size={12} />
                         </span>
                       </p>
-                      {profileData?.data?.userRole === "instructor" && (
+                      {profileData?.userRole === "instructor" && (
                         <Link
                           to={"admin"}
                           className="hover:scale-95 transition-all duration-50"

@@ -5,20 +5,24 @@ import { Toaster } from "react-hot-toast";
 import Home from "./pages/Home";
 import { Outlet } from "react-router-dom";
 import { useLoadProfileQuery } from "./store/api/authApi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Loader from "./components/Loader";
+import Footer from "./components/Footer";
 const App = () => {
-  const { isLoading } = useLoadProfileQuery();
+  
+  const { isLoading, data: profileData } = useLoadProfileQuery();
 
-  const [pageLoading, setPageLoading] = useState(isLoading);
+  const [pageLoading, setPageLoading] = useState(false);
+
   return (
     <>
       {isLoading ? (
         <Loader />
       ) : (
         <div className="">
-          <Header />
+          <Header profileData={profileData} />
           <Outlet />
+          <Footer />
         </div>
       )}
 

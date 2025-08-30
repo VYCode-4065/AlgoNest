@@ -8,6 +8,8 @@ import Sidebar from "../admin/Sidebar";
 import Dashboard from "../admin/Dashboard";
 import AdminPage from "../admin/AdminPage";
 import CourseTable from "../admin/CourseTable";
+import CourseDetails from "../pages/CourseDetails";
+import CourseCollection from "../pages/CourseCollection";
 
 const router = createBrowserRouter([
   {
@@ -31,19 +33,26 @@ const router = createBrowserRouter([
         element: <MyLearning />,
       },
       {
-        path: "admin",
+        path: "/admin",
         element: <AdminPage />,
         children: [
           {
-            index:true,
-            path: "admin/dashboard",
+            index: true,
             element: <Dashboard />,
           },
           {
-            path: "admin/courses",
+            path: "courses",
             element: <CourseTable />,
           },
         ],
+      },
+      {
+        path: "/course-details/:id",
+        element: <CourseDetails />,
+      },
+      {
+        path: "/courses",
+        element: <CourseCollection />,
       },
     ],
   },

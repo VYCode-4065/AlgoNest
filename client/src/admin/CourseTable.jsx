@@ -1,86 +1,20 @@
 import React, { useState } from "react";
 import AddCourse from "./course/AddCourse";
+import { useGetCourseQuery } from "../store/api/courseApi";
+import EditCourse from "./course/EditCourse";
 
 const CourseTable = () => {
-  const [courses, setCourses] = useState([
-    {
-      id: 1,
-      title: "React Basics",
-      price: 400,
-      category: "Web Dev",
-      isPublished: true,
-    },
-    {
-      id: 2,
-      title: "Node.js Fundamentals",
-      price: 500,
-      category: "Backend",
-      isPublished: false,
-    },
-    {
-      id: 3,
-      title: "Advanced JavaScript",
-      price: 2500,
-      category: "Programming",
-      isPublished: true,
-    },
-    {
-      id: 4,
-      title: "Express.js Crash Course",
-      price: 1299,
-      category: "Backend",
-      isPublished: true,
-    },
-    {
-      id: 5,
-      title: "MongoDB for Beginners",
-      price: 399,
-      category: "Database",
-      isPublished: false,
-    },
-    {
-      id: 6,
-      title: "Fullstack with MERN",
-      price: 449,
-      category: "Web Dev",
-      isPublished: true,
-    },
-    {
-      id: 7,
-      title: "Docker Essentials",
-      price: 799,
-      category: "DevOps",
-      isPublished: true,
-    },
-    {
-      id: 8,
-      title: "Kubernetes Guide",
-      price: 2999,
-      category: "DevOps",
-      isPublished: false,
-    },
-    {
-      id: 9,
-      title: "GraphQL Basics",
-      price: 299,
-      category: "API",
-      isPublished: true,
-    },
-    {
-      id: 10,
-      title: "TypeScript Mastery",
-      price: 499,
-      category: "Programming",
-      isPublished: true,
-    },
-  ]);
+  // const [courses, setCourses] = useState([]);
+
+  const { data: courses } = useGetCourseQuery();
+  const [editCourseData, setEditCourseData] = useState({});
 
   const [openAddCourse, setOpenAddCourse] = useState(false);
+  const [openEditCourse, setOpenEditCourse] = useState(false);
 
   return (
     <div className="p-6 bg-purple-50 min-h-screen ">
       {openAddCourse && <AddCourse close={() => setOpenAddCourse(false)} />}
-
       {/* Add Course Button */}
       <div className="flex justify-center mb-6">
         <button
@@ -104,12 +38,19 @@ const CourseTable = () => {
             </tr>
           </thead>
           <tbody className="">
-            {courses.map((course) => (
-              <tr key={course.id} className="border-b hover:bg-purple-50">
+            {courses?.data?.map((course) => (
+              <tr
+                key={course._id}
+                className="border-b hover:bg-purple-50"
+                onClick={(e) => {
+                  setOpenEditCourse(true);
+                  setEditCourseData(course);
+                }}
+              >
                 <td className="px-4 py-3 font-medium text-gray-800">
-                  {course.title}
+                  {course.courseTitle}
                 </td>
-                <td className="px-4 py-3">₹{course.price}</td>
+                <td className="px-4 py-3">₹{course.coursePrice}</td>
                 <td className="px-4 py-3">{course.category}</td>
                 <td className="px-4 py-3">
                   {course.isPublished ? (
@@ -131,6 +72,12 @@ const CourseTable = () => {
             ))}
           </tbody>
         </table>
+        {openEditCourse && (
+          <EditCourse
+            editCourseData={editCourseData}
+            close={() => setOpenEditCourse(false)}
+          />
+        )}
       </div>
     </div>
   );

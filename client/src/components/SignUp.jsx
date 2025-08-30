@@ -37,11 +37,12 @@ const SignUp = ({ openLogin }) => {
         password: "",
       });
       if (isSuccess) {
+        openLogin(true);
         return toast.success(signData.message);
       }
 
-      if (res.error.data.error) {
-        throw res.error.data.message;
+      if (!res.data?.success) {
+        throw "Currently unable to signup !";
       }
     } catch (error) {
       return toast.error(error);

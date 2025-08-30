@@ -20,6 +20,7 @@ const authSlice = createSlice({
 })
 
 
+export const getProfileData = (state)=>state.auth
 export const { loggedInUser, loggedOutUser } = authSlice.actions
 
 export default authSlice.reducer
