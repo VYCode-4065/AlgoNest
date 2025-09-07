@@ -1,5 +1,6 @@
 import React from "react";
 import AlgoNestLogo from "./Logo";
+import StyledBtn from "./StyledBtn";
 
 const Footer = () => {
   return (
@@ -8,7 +9,7 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row justify-between">
           {/* Logo and Description */}
           <div className="mb-8 md:mb-0 md:w-1/3">
-            <AlgoNestLogo textColor={'white'}/>
+            <AlgoNestLogo textColor={"white"} />
             <p className="text-purple-300 max-w-sm">
               Empowering learners worldwide with quality online education and
               innovative tools.
@@ -92,12 +93,7 @@ const Footer = () => {
                 placeholder="Your email"
                 className="w-full px-4 py-2 rounded-md text-purple-900 focus:outline-none mb-3 sm:mb-0 sm:mr-3"
               />
-              <button
-                type="submit"
-                className="bg-purple-700 hover:bg-purple-600 text-white px-5 py-2 rounded-md transition"
-              >
-                Subscribe
-              </button>
+              <StyledBtn>Subscribe</StyledBtn>
             </form>
           </div>
         </div>

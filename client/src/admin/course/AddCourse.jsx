@@ -103,10 +103,10 @@ const AddCourse = ({ close }) => {
   return (
     <div className="fixed top-16 bottom-0 right-0 left-0 z-50 bg-slate-500 overflow-auto">
       <div
-        className={`flex items-center justify-center min-h-screen bg-purple-100 p-4`}
+        className={`flex items-center justify-center min-h-screen bg-purple-100 p-4  dark:bg-slate-800`}
       >
         <div
-          className={` bg-white rounded-2xl shadow-lg p-8 w-full max-w-2xl  ${
+          className={` bg-white  dark:bg-slate-800 dark:border rounded-2xl shadow-lg p-8 w-full max-w-2xl  ${
             openAddCourse ? "scale-100" : "scale-0"
           } transition-transform duration-200`}
         >
@@ -116,14 +116,14 @@ const AddCourse = ({ close }) => {
             </h2>
             <button
               onClick={handleClose}
-              className="text-sm font-bold text-neutral-800 mb-6 cursor-pointer shadow-lg inline-block px-3 py-1 rounded-full hover:shadow-purple-600 hover:scale-105 transition-transform duration-300"
+              className="text-sm font-bold text-neutral-800 dark:text-slate-300 mb-6 cursor-pointer shadow-lg inline-block px-3 py-1 rounded-full hover:shadow-purple-600 hover:scale-105 transition-transform duration-300"
             >
               Cancel
             </button>
           </div>
           <hr className="mb-3" />
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6 dark:text-slate-300">
             {/* Course Title */}
             <div>
               <label className="block text-purple-700 font-medium mb-2 ">
@@ -134,6 +134,7 @@ const AddCourse = ({ close }) => {
                 name="courseTitle"
                 value={formData.courseTitle}
                 onChange={handleChange}
+                placeholder="Enter course title..."
                 required
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
@@ -149,7 +150,7 @@ const AddCourse = ({ close }) => {
                 value={formData.category}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-purple-400 rounded-lg outline-none focus:ring-1 focus:ring-purple-500"
+                className="w-full px-4 py-2 border border-purple-400 rounded-lg outline-none focus:ring-1 focus:ring-purple-500 dark:bg-slate-800 dark:border"
               >
                 <option value="" hidden>
                   Select Category
@@ -175,6 +176,7 @@ const AddCourse = ({ close }) => {
                 required
                 value={formData.coursePrice}
                 onChange={handleChange}
+                placeholder="Enter course price"
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
               />
             </div>
@@ -220,6 +222,7 @@ const AddCourse = ({ close }) => {
                 name="subTitle"
                 value={formData.subTitle}
                 onChange={handleChange}
+                placeholder="Enter subtitle"
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
               />
             </div>

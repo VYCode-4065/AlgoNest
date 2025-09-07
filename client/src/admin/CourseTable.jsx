@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddCourse from "./course/AddCourse";
 import { useGetCourseQuery } from "../store/api/courseApi";
 import EditCourse from "./course/EditCourse";
+import CustomSelect from "../components/CustomSelect";
+import { useNavigate } from "react-router-dom";
+import AddLecture from "./letcures/AddLecture";
+import UpdateLecture from "./letcures/UpdateLecture";
 
 const CourseTable = () => {
   // const [courses, setCourses] = useState([]);
@@ -12,8 +16,21 @@ const CourseTable = () => {
   const [openAddCourse, setOpenAddCourse] = useState(false);
   const [openEditCourse, setOpenEditCourse] = useState(false);
 
+  const [selectedLectureData, setSelectedLectureData] = useState("");
+
+  const [openLectureAdd, setOpenLectureAdd] = useState(false);
+  const [openLectureUpdate, setOpenLectureUpdate] = useState(false);
+
+  const handleSelectedOption = (selectedOption) => {
+    if (selectedOption === "Add") {
+      setOpenLectureAdd(true);
+    } else {
+      setOpenLectureUpdate(true);
+    }
+  };
+
   return (
-    <div className="p-6 bg-purple-50 min-h-screen ">
+    <div className="p-6 bg-purple-50 min-h-screen dark:bg-slate-800 dark:text-slate-300">
       {openAddCourse && <AddCourse close={() => setOpenAddCourse(false)} />}
       {/* Add Course Button */}
       <div className="flex justify-center mb-6">
@@ -27,7 +44,7 @@ const CourseTable = () => {
 
       {/* Responsive Table */}
       <div className="overflow-x-auto">
-        <table className="w-full border border-purple-200 text-left bg-white rounded-lg overflow-hidden">
+        <table className="w-full border border-purple-200 text-left  rounded-lg overflow-hidden">
           <thead className="bg-purple-600 text-white">
             <tr>
               <th className="px-4 py-3">Course Title</th>
@@ -35,19 +52,13 @@ const CourseTable = () => {
               <th className="px-4 py-3">Category</th>
               <th className="px-4 py-3">Published</th>
               <th className="px-4 py-3">Action</th>
+              <th className="px-4 py-3">Lectures</th>
             </tr>
           </thead>
           <tbody className="">
             {courses?.data?.map((course) => (
-              <tr
-                key={course._id}
-                className="border-b hover:bg-purple-50"
-                onClick={(e) => {
-                  setOpenEditCourse(true);
-                  setEditCourseData(course);
-                }}
-              >
-                <td className="px-4 py-3 font-medium text-gray-800">
+              <tr key={course._id} className="border-b hover:bg-purple-100 dark:hover:bg-purple-800">
+                <td className="px-4 py-3 font-medium ">
                   {course.courseTitle}
                 </td>
                 <td className="px-4 py-3">₹{course.coursePrice}</td>
@@ -64,9 +75,40 @@ const CourseTable = () => {
                   )}
                 </td>
                 <td className="px-4 py-3">
-                  <button className="px-4 py-1 bg-purple-500 text-white rounded-lg text-sm hover:bg-purple-600 cursor-pointer">
+                  <button
+                    onClick={(e) => {
+                      setOpenEditCourse(true);
+                      setEditCourseData(course);
+                    }}
+                    className="px-4 py-1 bg-purple-500 text-white rounded-lg text-sm hover:bg-purple-600 cursor-pointer"
+                  >
                     Edit
                   </button>
+                </td>
+                <td className="px-4 py-3">
+                  <div
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
+                  >
+                    <CustomSelect
+                      roundedValue="lg"
+                      setSelectedOption={(selectedOption) => {
+                        setSelectedLectureData({
+                          courseId: course._id,
+                          courseTitle: course.courseTitle,
+                        });
+                        handleSelectedOption(selectedOption);
+                      }}
+                      backgroundColor="purple-600"
+                      textColor="slate-200"
+                      options={[
+                        { value: "add", label: "Add" },
+                        { value: "update", label: "Update" },
+                      ]}
+                      className={"font-semibold"}
+                    />
+                  </div>
                 </td>
               </tr>
             ))}
@@ -76,6 +118,18 @@ const CourseTable = () => {
           <EditCourse
             editCourseData={editCourseData}
             close={() => setOpenEditCourse(false)}
+          />
+        )}
+        {openLectureAdd && (
+          <AddLecture
+            courseData={selectedLectureData}
+            closeAdd={() => setOpenLectureAdd(false)}
+          />
+        )}
+        {openLectureUpdate && (
+          <UpdateLecture
+            courseData={selectedLectureData}
+            closeAdd={() => setOpenLectureUpdate(false)}
           />
         )}
       </div>

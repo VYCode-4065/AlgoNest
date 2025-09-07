@@ -51,6 +51,12 @@ const courseApi = createApi({
                 body: { checkedCategory }
             })
         }),
+        getByEnrolledId: builder.query({
+            query: () => ({
+                url: '/getByEnrolledId',
+                method: 'GET'
+            })
+        }),
         deleteCourse: builder.mutation({
             query: (courseId) => ({
                 url: '/delete',
@@ -69,6 +75,6 @@ const courseApi = createApi({
     })
 })
 
-export const { useGetCourseQuery, useAddCourseMutation, useUpdateCourseMutation, useGetAllCoursesQuery, useDeleteCourseMutation, useGetCourseByIdMutation, useGetCourseByCatMutation, useSearchCourseMutation } = courseApi
+export const { useGetCourseQuery, useAddCourseMutation, useUpdateCourseMutation, useGetAllCoursesQuery, useDeleteCourseMutation, useGetCourseByIdMutation, useGetCourseByCatMutation, useSearchCourseMutation, useGetByEnrolledIdQuery } = courseApi
 
 export default courseApi

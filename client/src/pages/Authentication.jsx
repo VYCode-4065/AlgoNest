@@ -3,29 +3,37 @@ import Login from "../components/Login";
 import Signup from "../components/SignUp";
 import { Navigate, redirect, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { isAuthenticated } from "../utils/isAuthenticated";
-import authImage from '../../public/authImage.avif'
+import authImage from "../../public/authImage.avif";
+import { getProfileData } from "../features/authSlice";
 
 const Authentication = () => {
   const location = useLocation();
   const [isLogin, setIsLogin] = useState(location.state?.login);
 
+  const navigate = useNavigate();
+  const { isAuthenticated } = useSelector(getProfileData);
+
+  setTimeout(() => {
+    if (isAuthenticated) {
+      return navigate("/");
+    }
+  }, 10);
 
   useEffect(() => {
     setIsLogin(location.state?.login);
   }, [location.state]);
   return (
-    <div className=" flex items-center gap-3 justify-center flex-col  my-auto pt-5 pb-3 px-5  transition-all duration-300">
-      <div className="grid lg:grid-cols-2 gap-2 w-full">
-        <div className="grid w-full  md:max-w-lg mx-auto gap-1 my-auto transition-all duration-500">
+    <div className="h-screen flex items-center gap-3 justify-center flex-col  pt- pb-3 px-5  transition-all duration-300 bg-gradient-to-tl from-blue-500 via-purple-500 to-purple-800">
+      <div className="grid w-full">
+        <div className="grid w-full  md:max-w-lg mx-auto gap-1  transition-all duration-500">
           {isLogin ? (
             <Login closeLogin={() => setIsLogin(false)} />
           ) : (
             <Signup openLogin={() => setIsLogin(true)} />
           )}
         </div>
-        <div className=" w-full hidden lg:block  relative">
-          <div className="h-[80vh] rounded-2xl overflow-hidden">
+        {/* <div className=" w-full hidden lg:block  relative">
+          <div className="h-full rounded-2xl overflow-hidden">
             <img
               src={authImage}
               alt="study"
@@ -38,7 +46,7 @@ const Authentication = () => {
               together!”
             </p>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

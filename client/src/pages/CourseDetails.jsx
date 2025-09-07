@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { TbInfoOctagon } from "react-icons/tb";
 import { FaCirclePlay } from "react-icons/fa6";
 import Button from "../components/Button";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Markup } from "interweave";
 import { useGetCourseByIdMutation } from "../store/api/courseApi";
 import LoadingSpinner from "../components/LoadingSpin";
+import testVideo from "../assets/videos/testVideo.mp4";
 
 const CourseDetails = () => {
   const [fetchCourse, { isLoading }] = useGetCourseByIdMutation();
@@ -55,11 +56,13 @@ const CourseDetails = () => {
       {isLoading ? (
         <LoadingSpinner />
       ) : (
-        <div className="container">
-          <div className="bg-purple-600 text-slate-50 min-h-60 px-5 lg:px-30 py-10  text-center ">
+        <div className="container dark:bg-slate-800 dark:text-slate-300">
+          <div
+            className={`bg-gradient-to-tr from-blue-800 via-purple-600 to-purple-800 dark:from-blue-800 dark:via-purple-600 dark:to-purple-700 text-slate-50 min-h-60 px-5 lg:px-30 py-10  text-center `}
+          >
             <div className="lg:max-w-xl text-left">
               <h1 className="font-bold text-2xl">
-                Matering{" "}
+                Mastering{" "}
                 {courseData?.courseTitle + " Course" ||
                   "Mastering Next.js: Full-Stack Web Development"}
               </h1>
@@ -116,9 +119,9 @@ const CourseDetails = () => {
                 </div>
               </div>
             </div>
-            <div className="lg:px-30">
-              <div className=" rounded-lg overflow-hidden px-5 shadow-2xl">
-                <video className="" src={""} controls></video>
+            <div className="lg:px-30 shadow-md">
+              <div className=" rounded-lg overflow-hidden  shadow-2xl dark:shadow-md  dark:shadow-purple-800 ">
+                <video className="" src={testVideo} controls></video>
                 <h1 className="font-bold pt-10 pb-2 px-5">
                   Introduction to Next Js
                 </h1>
@@ -126,7 +129,13 @@ const CourseDetails = () => {
                 <div className="font-bold py-2 px-5 grid gap-5  ">
                   <p>₹599</p>
                   <div className="py-5">
-                    <Button>Enroll In Course</Button>
+                    <Link
+                      className="px-3 py-2 shadow-md rounded-full bg-purple-600 hover:bg-purple-700 dark:border dark:border-slate-300 text-slate-100 transition duration-200"
+                      to={"/checkout"}
+                      state={courseData}
+                    >
+                      Enroll In Course
+                    </Link>
                   </div>
                 </div>
               </div>

@@ -10,6 +10,8 @@ import {
 import { Link } from "react-router-dom";
 import { Markup } from "interweave";
 import { MdClose } from "react-icons/md";
+import toast from "react-hot-toast";
+import StyledBtn from "../components/StyledBtn";
 
 const Home = () => {
   const { data: coursesData, isLoading } = useGetAllCoursesQuery();
@@ -21,6 +23,9 @@ const Home = () => {
   const [openSearchPage, setOpenSearchPage] = useState(false);
 
   const handleSearch = async () => {
+    if (!searchData) {
+      return toast.error("Provide search value !");
+    }
     setSearchResult([]);
 
     try {
@@ -37,8 +42,10 @@ const Home = () => {
     }
   };
   return (
-    <div className="">
-      <div className="bg-purple-800 text-slate-50 min-h-32 px-5 lg:px-10 py-10 md:py-16 text-center">
+    <div className="dark:bg-slate-800 dark:text-slate-300">
+      <div
+        className={`bg-gradient-to-r from-blue-800 via-purple-600 to-purple-700 dark:from-purple-800 dark:via-purple-700 dark:to-purple-900 text-slate-50 min-h-32 px-5 lg:px-10 py-10 md:py-16 text-center dark:bg-slate-800`}
+      >
         <div className="inline-flex flex-col gap-5 lg:w-2xl items-center ">
           <h1 className="md:text-2xl lg:text-4xl font-semibold">
             Find the Best Courses for You
@@ -46,13 +53,13 @@ const Home = () => {
           <p className="text-purple-100 text-sm md:text-lg">
             Discover, Learn, and Upskill with our wide range of courses
           </p>
-          <div className="w-full flex items-center justify-between border rounded-full  bg-slate-50 text-white overflow-hidden hover:shadow-lg   hover:shadow-purple-400  transition-all duration-200">
+          <div className="w-full flex items-center justify-between border rounded-full  bg-slate-50 dark:bg-slate-800  text-white overflow-hidden hover:shadow-lg   hover:shadow-purple-400  transition-all duration-200 ">
             <input
               type="text"
               value={searchData}
               onChange={(e) => setSearchData(e.target.value)}
               placeholder="Search Courses"
-              className="outline-none w-full pl-5 text-neutral-900"
+              className="outline-none w-full pl-5 text-neutral-900 dark:text-slate-300"
             />
             <button
               onClick={(e) => {
@@ -64,13 +71,8 @@ const Home = () => {
               Search
             </button>
           </div>
-          <Link
-            to={"courses"}
-            className={
-              "rounded-full py-1 px-5 md:py-2  bg-blue-100 text-purple-600  w-fit font-semibold hover:scale-105 transition-transform duration-200"
-            }
-          >
-            Explore Courses
+          <Link to={"/courses"}>
+            <StyledBtn>Explore Courses</StyledBtn>
           </Link>
         </div>
       </div>
@@ -78,7 +80,7 @@ const Home = () => {
         <div
           className={`${
             !openSearchPage && "hidden"
-          } absolute top-0 z-50 w-full min-h-40 bg-white border transition duration-100`}
+          } absolute top-0 z-50 w-full min-h-40 bg-white dark:bg-slate-800 border transition duration-100`}
         >
           <div className=" flex flex-col gap-3 py-5">
             <div className="flex items-center justify-between font-bold text-lg px-10">
@@ -91,9 +93,9 @@ const Home = () => {
             </div>
             <hr />
 
-            <section className=" w-full  error section container text-purple-700 px-5 py-3 rounded ">
+            <section className=" w-full  error section container text-purple-700 dark:text-slate-300  px-5 py-3 rounded ">
               {searchResult.length > 0 ? (
-                <div className="w-full grid gap-5 py-10 md:px-5 max-h-96 overflow-y-auto">
+                <div className="w-full grid gap-5 py-10 md:px-5 max-h-screen overflow-y-auto transition-all duration-300">
                   {Array.isArray(searchResult) &&
                     searchResult?.map((course, idx) => {
                       return (
@@ -156,13 +158,14 @@ const Home = () => {
         <h1 className=" md:text-2xl lg:text-3xl font-semibold text-center">
           Our Courses
         </h1>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5 py-10 md:px-5">
+        <div className="grid md:grid-cols-3 lg:grid-cols-5 lg:gap-x-3 lg:gap-y-10 gap-2 py-10 md:px-2 lg:px-5">
           {Array.isArray(coursesData?.data) &&
             coursesData?.data?.map((course, idx) => {
-              if (idx >= 10) return;
+              if (idx >= 15) return;
               return (
                 <Card
                   name={course.courseTitle}
+                  subTitle={course.subTitle}
                   imageLink={course.thumbnails}
                   key={idx}
                   courseId={course._id}

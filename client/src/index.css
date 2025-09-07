@@ -1,10 +1,13 @@
 @import "tailwindcss";
 
+/* Dark mode variant */
+@custom-variant dark (&:where(.dark, .dark *));
 
 * {
   box-sizing: border-box;
   scroll-behavior: smooth;
 }
+
 body {
   margin: 0;
   padding: 0;

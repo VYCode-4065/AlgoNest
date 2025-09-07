@@ -10,6 +10,10 @@ import AdminPage from "../admin/AdminPage";
 import CourseTable from "../admin/CourseTable";
 import CourseDetails from "../pages/CourseDetails";
 import CourseCollection from "../pages/CourseCollection";
+import CreatePayment from "../pages/CreatePayment";
+import Lectures from "../admin/letcures/Lectures";
+import AddLecture from "../admin/letcures/AddLecture";
+import PlayCourse from "../pages/PlayCourse";
 
 const router = createBrowserRouter([
   {
@@ -33,6 +37,10 @@ const router = createBrowserRouter([
         element: <MyLearning />,
       },
       {
+        path: "my-learning/course/:courseTitle",
+        element: <PlayCourse />,
+      },
+      {
         path: "/admin",
         element: <AdminPage />,
         children: [
@@ -53,6 +61,10 @@ const router = createBrowserRouter([
       {
         path: "/courses",
         element: <CourseCollection />,
+      },
+      {
+        path: "/checkout",
+        element: <CreatePayment />,
       },
     ],
   },

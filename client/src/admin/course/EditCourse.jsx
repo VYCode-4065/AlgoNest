@@ -133,12 +133,12 @@ const EditCourse = ({ close, editCourseData }) => {
   };
 
   return (
-    <div className="fixed top-16 bottom-0 right-0 left-0 z-50 bg-slate-500 overflow-auto">
+    <div className="fixed top-16 bottom-0 right-0 left-0 z-50 bg-slate-500  overflow-auto">
       <div
-        className={`flex items-center justify-center min-h-screen bg-purple-100 p-4`}
+        className={`flex items-center justify-center min-h-screen bg-purple-100 dark:bg-slate-800 p-4`}
       >
         <div
-          className={` bg-white rounded-2xl shadow-lg p-8 w-full max-w-2xl  ${
+          className={` bg-white dark:bg-slate-800 dark:border rounded-2xl shadow-lg p-8 w-full max-w-2xl  ${
             openEditCourse ? "scale-100" : "scale-0"
           } transition-transform duration-200`}
         >
@@ -148,7 +148,7 @@ const EditCourse = ({ close, editCourseData }) => {
             </h2>
             <button
               onClick={handleClose}
-              className="text-sm font-bold text-neutral-800 mb-6 cursor-pointer shadow-lg inline-block px-3 py-1 rounded-full hover:shadow-purple-600 hover:scale-105 transition-transform duration-300"
+              className="text-sm font-bold text-neutral-800 dark:text-slate-300 mb-6 cursor-pointer shadow-lg inline-block px-3 py-1 rounded-full hover:shadow-purple-600 hover:scale-105 transition-transform duration-300"
             >
               Cancel
             </button>
@@ -218,7 +218,7 @@ const EditCourse = ({ close, editCourseData }) => {
                 name="courseLevel"
                 value={formData.courseLevel}
                 onChange={handleChange}
-                required = {true}
+                required={true}
                 className="w-full px-4 py-2 border border-purple-400 rounded-lg outline-none focus:ring-1 focus:ring-purple-500"
               >
                 <option value="" hidden>
@@ -272,6 +272,7 @@ const EditCourse = ({ close, editCourseData }) => {
                 Description
               </label>
               <DescriptionEditor
+                defaultValue={formData.description}
                 desData={(val) => {
                   setFormData((prev) => {
                     return {

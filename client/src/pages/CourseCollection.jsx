@@ -98,7 +98,7 @@ const CourseCollection = () => {
   }, [allCourseLoad]);
 
   return (
-    <div className="grid lg:grid-cols-4">
+    <div className="grid lg:grid-cols-4 dark:bg-slate-800 dark:text-slate-300">
       <div className="hidden lg:block container border p-5 border-rose-100 ">
         <h1 className="text-lg text-purple-700 font-bold">Filters</h1>
         <hr />
@@ -107,7 +107,7 @@ const CourseCollection = () => {
           <div className="flex items-center gap-2">
             <h2>Sort By :</h2>
             <select
-              className="bg-gray-200 px-3 py-0.5 text-purple-800 rounded font-semibold cursor-pointer outline-none transition duration-300"
+              className="bg-gray-200 dark:bg-slate-800 dark:border dark:border-slate-300 dark:text-slate-300 px-3 py-0.5 text-purple-800 rounded font-semibold cursor-pointer outline-none transition duration-300"
               name="price"
               id="priceFilter"
               onChange={(e) => handlePriceFilter(e.target.value)}
@@ -168,16 +168,16 @@ const CourseCollection = () => {
         </div>
       </div>
       <div className="h-screen overflow-auto col-span-3">
-        <div className="grid md:grid-cols-2 gap-3 md:gap-0 px-5 py-3 md:py-5 md:px-10 border-b-2 h-fit sticky top-0 z-20 bg-white border-b-purple-500">
+        <div className="grid md:grid-cols-2 gap-3 md:gap-0 px-5 py-3 md:py-5 md:px-10 border-b-2 h-fit sticky top-0 z-20 bg-white dark:bg-slate-800 dark:text-slate-300 border-b-purple-500">
           <h1 className="text-lg font-bold px-5 text-purple-600 py-1 w-fit shadow-2xl rounded-full hover:shadow-purple-800 transition duration-300">
             Explore All Courses
           </h1>
-          <div className="w-full flex items-center justify-between border rounded-full  bg-slate-50 text-white overflow-hidden hover:shadow-lg   hover:shadow-purple-400  transition-all duration-200  border-purple-500">
+          <div className="w-full flex items-center justify-between border rounded-full  bg-slate-50 text-white dark:bg-slate-800 dark:text-slate-300 overflow-hidden hover:shadow-md hover:shadow-purple-400  transition-all duration-200  border-purple-500">
             <input
               type="text"
               placeholder="Search Courses"
               onChange={(e) => handleSearch(e.target.value)}
-              className="outline-none  w-full pl-5 text-neutral-900"
+              className="outline-none  w-full pl-5 text-neutral-900 dark:text-slate-200"
             />
             <button className="h-full px-5 py-1 md:py-2 cursor-pointer bg-purple-800 hover:font-medium">
               Search
@@ -187,34 +187,34 @@ const CourseCollection = () => {
         <p className="inline-block mx-5 mt-2">
           Total Courses : {coursesData?.length}
         </p>
-        <div className=" grid gap-5 py-10 md:px-5">
+        <div className=" grid gap-5 py-10 md:px-5 px-3">
           {Array.isArray(coursesData) &&
             coursesData?.map((course, idx) => {
               return (
                 <div
                   key={course._id || idx}
-                  className="w-full rounded container border overflow-hidden py-3 px-5 grid grid-cols-4 gap-5"
+                  className="w-full rounded container border overflow-hidden  grid grid-cols-4 md:gap-5"
                 >
                   <img
                     src={course.thumbnails}
-                    className="h-40 w-full"
+                    className="h-full w-full object-center "
                     alt={course?.courseTitle}
                   />
-                  <div className="text-left col-span-3 grid gap-2 px-5">
+                  <div className="text-left col-span-3 inline-grid gap-2 px-5 md:py-3 py-1">
                     {/* course title  */}
-                    <h1 className="text-2xl font-bold">{course.courseTitle}</h1>
+                    <h1 className="md:text-2xl font-bold">{course.courseTitle}</h1>
                     {/* course subtitle  */}
-                    <p className="font-semibold">
+                    <p className="text-sm md:text- font-semibold">
                       Learn {course.courseTitle} from scratch !
                     </p>
                     {course.description !== "undefined" &&
                     course.description !== "" ? (
                       <Markup
-                        className="line-clamp-2"
+                        className="line-clamp-2 text-xs md:text-sm"
                         content={course?.description}
                       />
                     ) : (
-                      <span className="line-clamp-2">
+                      <span className="line-clamp-2 text-xs">
                         {`The ${course?.courseTitle} course is designed to give learners a strong foundation in both the basics and advanced concepts. 
                         Throughout this course, you will work on practical examples and real-world scenarios that make learning engaging. 
                         It is structured in a way that beginners can easily follow, while also providing valuable insights for experienced learners. 
@@ -222,10 +222,11 @@ const CourseCollection = () => {
                         This course ensures a perfect balance of theory, practice, and hands-on experience to help you grow in your career.`}
                       </span>
                     )}
+                    
                     <Link
                       to={`/course-details/${course._id}`}
                       className={
-                        "bg-purple-600 border w-fit border-white text-white hover:bg-purple-700 transition duration-300 px-2 py-1 rounded-full mt-2"
+                        "text-sm px-2 md:py-1.5 border border-purple-600 rounded-full inline-block w-fit h-fit bg-purple-600 hover:bg-purple-700 text-slate-200 duration-200 font-medium"
                       }
                     >
                       Explore course

@@ -8,19 +8,28 @@ import { useLoadProfileQuery } from "./store/api/authApi";
 import { useEffect, useState } from "react";
 import Loader from "./components/Loader";
 import Footer from "./components/Footer";
+import useDarkMode from "./hooks/useDarkMode";
 const App = () => {
-  
   const { isLoading, data: profileData } = useLoadProfileQuery();
 
   const [pageLoading, setPageLoading] = useState(false);
+
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
 
   return (
     <>
       {isLoading ? (
         <Loader />
       ) : (
-        <div className="">
-          <Header profileData={profileData} />
+        <div >
+          <Header
+            profileData={profileData}
+            isDarkMode={isDarkMode}
+            toggleDarkMode={() => {
+              console.log(isDarkMode);
+              toggleDarkMode();
+            }}
+          />
           <Outlet />
           <Footer />
         </div>

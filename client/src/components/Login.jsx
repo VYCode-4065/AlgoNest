@@ -26,6 +26,7 @@ const Login = ({ closeLogin }) => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
     if (!loginData.email || !loginData.password) {
       return toast.error("Please provide all the credentials !");
     }
@@ -52,23 +53,28 @@ const Login = ({ closeLogin }) => {
     }
   };
   return (
-    <div className=" bg-white w-full lg:min-w-lg shadow-lg shadow-slate-700  rounded-lg py-5 px-5 grid gap-5">
+    <div className=" border border-slate-300 backdrop-blur-lg w-full lg:min-w-lg shadow-lg shadow-slate-700  rounded-lg py-5 px-5 grid gap-5 text-gray-200">
       <div className="px-2 flex flex-col gap-2 items-center">
-        <div className="bg-gray-300 h-12  w-12 rounded-full  inline-flex items-center justify-center">
-          <p className="inline-flex items-center justify-center bg-purple-600/50 h-3 max-w-fit px-1 py-3 text-white rounded-full">
+        <div className="bg-gray-50 h-12  w-12 rounded-full  inline-flex items-center justify-center">
+          <p className="inline-flex items-center justify-center bg-purple-600/50 h-3 max-w-fit px-1 py-3 text-white rounded-full ">
             <FaCheck />
           </p>
         </div>
-        <h1 className="text-center font-bold text-2xl transition-all duration-300  text-slate-800 hover:underline ">
+        <h1
+          className="relative inline-block pb-1 
+           after:content-[''] after:absolute after:left-0 after:bottom-0 
+           after:h-[2px] after:w-0 after:bg-slate-100 text-lg font-bold 
+           after:transition-all after:duration-500 hover:after:w-full text-white"
+        >
           Welcome Back
         </h1>
-        <p className=" text-gray-500 text-sm inline-block font-semibold">
+        <p className="  text-sm inline-block font-semibold">
           Sign in to continue your learning
         </p>
       </div>
       <form className="w-full grid " onSubmit={handleLogin}>
         <div className="grid gap-2 w-full  mb-3 rounded-lg">
-          <label htmlFor="email" className="font-semibold">
+          <label htmlFor="email" className="font-semibold ">
             Email Address :{" "}
           </label>
           <input
@@ -83,14 +89,14 @@ const Login = ({ closeLogin }) => {
             }
             value={loginData.email}
             placeholder="Eg. jhon@example.com"
-            className="outline-none  px-2 rounded-lg py-2 border-purple-500 border-2"
+            className="outline-none  px-2 rounded-lg py-2 border-gray-200 border focus-within:bg-purple-100 focus-within:text-purple-800"
           />
         </div>
         <div className="grid gap-2 w-full  mb-3 rounded-lg">
-          <label htmlFor="password" className="font-semibold">
+          <label htmlFor="password" className="font-semibold ">
             Password :{" "}
           </label>
-          <div className="flex bg-white items-center justify-between px-2 rounded-lg  border-2 border-purple-500">
+          <div className="flex focus-within:text-purple-800 focus-within:bg-white items-center justify-between px-2 rounded-lg  border border-gray-200">
             <input
               type={`${eyeOpen ? "text" : "password"}`}
               id="password"
@@ -106,14 +112,14 @@ const Login = ({ closeLogin }) => {
               className="outline-none px-2 py-2 w-full "
             />
             <div
-              className="cursor-pointer"
+              className="cursor-pointer hover:text-purple-700"
               onClick={() => setEyeOpen((prev) => !prev)}
             >
               {eyeOpen ? <IoEye size={25} /> : <IoEyeOff size={25} />}
             </div>
           </div>
         </div>
-        <div className="text-sm font-semibold text-neutral-500 flex items-center justify-between px-3">
+        <div className="text-sm font-semibold  flex items-center justify-between px-3">
           <div className="flex gap-1 items-center">
             <input type="checkbox" name="remember" id="remember" />
             <label htmlFor="remember" className="cursor-pointer">
@@ -122,15 +128,16 @@ const Login = ({ closeLogin }) => {
           </div>
           <p
             onClick={() => setForgetPassword(true)}
-            className="cursor-pointer text-sm font-semibold text-purple-400 hover:text-purple-500"
+            className="cursor-pointer text-sm font-semibold  hover:text-purple-500"
           >
             Forgot Password ?
           </p>
         </div>
         <Button
+          type="submit"
           disabled={isLoading}
           className={
-            "w-full my-5 m-auto bg-purple-700 hover:bg-purple-800 text-white font-semibold px-10"
+            "w-full my-5 m-auto bg-purple-200 text-purple-700 hover:bg-purple-800 hover:text-white font-semibold px-10 border-2 border-purple-500 backdrop-blur-sm"
           }
         >
           {isLoading ? "Loading..." : "Sign in"}
@@ -139,7 +146,7 @@ const Login = ({ closeLogin }) => {
           Don't have an account ?{" "}
           <span
             onClick={closeLogin}
-            className="text-purple-800 font-semibold cursor-pointer "
+            className="hover:text-purple-800 font-semibold cursor-pointer hover:underline transition-all duration-200"
           >
             Sign up
           </span>

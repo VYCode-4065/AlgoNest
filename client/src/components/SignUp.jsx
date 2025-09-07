@@ -56,17 +56,22 @@ const SignUp = ({ openLogin }) => {
     });
   };
   return (
-    <div className=" bg-white w-full lg:min-w-lg shadow-lg shadow-slate-700 rounded-lg py-5 px-5 grid gap-5">
+    <div className=" bg-gradient-to-tl backdrop-blur-md w-full lg:min-w-lg shadow-lg shadow-slate-700 rounded-lg py-5 px-5 grid gap-5 text-slate-200 border border-slate-200">
       <div className="px-2 flex flex-col items-center gap-2 mx-auto text-center">
-        <div className="bg-gray-300 h-12  w-12 rounded-full  inline-flex items-center justify-center">
+        <div className="bg-gray-100 h-12  w-12 rounded-full  inline-flex items-center justify-center">
           <p className="flex items-center justify-center bg-purple-600/50 h-3 max-w-fit px-1 py-3 text-white rounded-full">
             <FaCheck />
           </p>
         </div>
-        <h1 className="text-center font-extrabold text-xl  text-slate-800 hover:underline transition-all">
+        <h1
+          className="relative inline-block pb-1 
+           after:content-[''] after:absolute after:left-0 after:bottom-0 
+           after:h-[2px] after:w-0 after:bg-slate-100 text-lg font-bold 
+           after:transition-all after:duration-500 hover:after:w-full text-white"
+        >
           Create Account
         </h1>
-        <p className=" text-gray-500 text-sm max-w-xs">
+        <p className="  text-sm max-w-xs">
           Join us to start your learning journey.
         </p>
       </div>
@@ -83,7 +88,7 @@ const SignUp = ({ openLogin }) => {
               setSignupData((prev) => ({ ...prev, name: e.target.value }))
             }
             value={signupData.name}
-            className="outline-none  px-2   border-2 border-purple-500 rounded-lg py-2 "
+            className="outline-none px-2 border border-purple-50 rounded-lg py-2 focus-within:bg-purple-100 focus-within:text-purple-900"
           />
         </div>
         <div className="grid gap-2 w-full  mb-3    rounded-lg">
@@ -98,14 +103,14 @@ const SignUp = ({ openLogin }) => {
               setSignupData((prev) => ({ ...prev, email: e.target.value }))
             }
             placeholder="Eg. jhon@example.com"
-            className="outline-none   border-2 border-purple-500  px-2 rounded-lg py-2 "
+            className="outline-none   border border-purple-50  px-2 rounded-lg py-2 focus-within:bg-purple-100 focus-within:text-purple-900"
           />
         </div>
         <div className="grid gap-2 w-full mb-3 rounded-lg">
           <label htmlFor="password" className="font-semibold">
             Password :{" "}
           </label>
-          <div className="flex items-center justify-between   border-2 border-purple-500 px-2 rounded-lg">
+          <div className="flex items-center justify-between   border border-purple-50 px-2 rounded-lg focus-within:bg-purple-100 focus-within:text-purple-900">
             <input
               type={`${passwordEyeOpen ? "text" : "password"}`}
               id="password"
@@ -132,7 +137,7 @@ const SignUp = ({ openLogin }) => {
           <label htmlFor="confpassword" className="font-semibold">
             Confirm Password :{" "}
           </label>
-          <div className="flex items-center justify-between   border-2 border-purple-500 px-2 rounded-lg">
+          <div className="flex items-center justify-between   border border-purple-50 px-2 rounded-lg focus-within:bg-purple-100 focus-within:text-purple-900">
             <input
               type={`${confPasswordEyeOpen ? "text" : "password"}`}
               id="confpassword"
@@ -163,7 +168,7 @@ const SignUp = ({ openLogin }) => {
           Already have an account ?{" "}
           <span
             onClick={openLogin}
-            className="text-purple-800 font-semibold cursor-pointer"
+            className="hover:text-purple-800 font-semibold cursor-pointer"
           >
             Sign in
           </span>
@@ -171,7 +176,7 @@ const SignUp = ({ openLogin }) => {
         <Button
           disabled={isLoading}
           className={
-            "my-5 w-full m-auto bg-purple-700 hover:bg-purple-800 text-white font-semibold px-10"
+            "my-5 w-full m-auto bg-purple-100 text-purple-900 hover:bg-purple-800 hover:text-purple-200 font-semibold px-10 transition-all duration-500"
           }
         >
           {isLoading ? "Loading...." : "Sign up"}

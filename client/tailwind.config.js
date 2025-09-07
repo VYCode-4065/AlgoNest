@@ -1,15 +1,15 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  darkMode: 'class', // 👈 important
+  darkMode: 'class', // 👈 allows toggling with "dark" class
   content: [
     "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}", // 👈 make sure these are correct
+    "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
-      fontFamilty: {
-        poppins: ['Poppins', 'sans-serif']
-      }
+      fontFamily: {
+        poppins: ['Poppins', 'sans-serif'],
+      },
     },
   },
   plugins: [],

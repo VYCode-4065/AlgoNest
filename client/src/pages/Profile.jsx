@@ -50,15 +50,15 @@ const Profile = () => {
     }
   };
   return (
-    <div className="relative h-screen">
-      <div className="md:min-h-60 bg-gradient-to-b from-purple-400 to-purple-600  "></div>
+    <div className="relative h-screen dark:bg-slate-800 dark:text-slate-300">
+      <div className="md:min-h-60 bg-gradient-to-br from-purple-700 to-purple-800 "></div>
       <div className="">
         <div
           className={`hidden md:block absolute left-[14%] lg:left-[22%] top-30 lg:min-w-4xl lg:min-h-72 bg-purple-100 rounded-lg shadow-lg shadow-purple-400 transition-all duration-500 ${
             active ? "scale-100" : "scale-0"
-          }`}
+          } dark:bg-slate-800 dark:text-slate-300`}
         >
-          <div className="absolute h-32 w-32 -top-10 left-56 lg:left-95 rounded-full shadow-2xl shadow-purple-400 bg-purple-100 overflow-hidden">
+          <div className="absolute h-32 w-32 -top-10 left-56 lg:left-95 rounded-full shadow-2xl shadow-purple-400 bg-purple-100 overflow-hidden ">
             <img
               src={
                 profileData?.data?.profilePic ||
@@ -68,21 +68,23 @@ const Profile = () => {
               className="h-full w-full object-cover"
             />
           </div>
-          <div className="inline-flex items-center justify-between w-full px-5 md:px-10 py-5">
-            <Link
-              to={"my-learning"}
-              className="font-semibold text-gray-700 text-shadow-sm text-shadow-purple-200 shadow-lg cursor-pointer hover:shadow-purple-500 py-1 px-2 rounded-full transition-all duration-200 "
+          <div className="inline-flex items-center justify-between w-full px-5 md:px-10 py-5 ">
+            <div
+              onClick={()=>{
+                navigate('/my-learning')
+              }}
+              className="font-semibold text-gray-700 dark:text-slate-300 dark:border dark:border-slate-200 text-shadow-sm  shadow-lg cursor-pointer hover:shadow-purple-500 py-1 px-2 rounded-full transition-all duration-200 "
             >
               My Learning
-            </Link>
+            </div>
             <p
               onClick={handleLogout}
-              className="font-semibold text-gray-700 text-shadow-sm text-shadow-purple-200 shadow-lg cursor-pointer hover:shadow-purple-500 py-1 px-2 rounded-full transition-all duration-200 "
+              className="font-semibold text-gray-700 dark:text-slate-300 dark:border dark:border-slate-200 text-shadow-sm  shadow-lg cursor-pointer hover:shadow-purple-500 py-1 px-2 rounded-full transition-all duration-200 "
             >
               Logout
             </p>
           </div>
-          <div className="w-full text-center mt-10 flex flex-col items-center gap-1">
+          <div className="w-full text-center mt-10 flex flex-col items-center gap-1 ">
             <h1 className="text-3xl font-semibold ">
               {profileData?.data?.name}
             </h1>

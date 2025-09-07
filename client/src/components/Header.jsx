@@ -12,12 +12,16 @@ import {
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { getProfileData } from "../features/authSlice";
+import useDarkMode from "../hooks/useDarkMode";
+import Switch from "./ModeToggle";
 
-const Header = () => {
+const Header = ({ isDarkMode, toggleDarkMode }) => {
   const authData = useSelector(getProfileData);
   const profileData = authData.user;
 
-  const [darkMode, setDarkMode] = useState(false);
+  const [openNavOption, setOpenNavOption] = useState(false);
+
+  const [darkMode, setDarkMode] = useState(isDarkMode);
   const [loggedIn, setLoggedIn] = useState(authData.isAuthenticated);
 
   const navigate = useNavigate();
@@ -48,7 +52,7 @@ const Header = () => {
   };
 
   return (
-    <div className=" head bg-gray-50 sticky top-0 shadow-lg shadow-neutral-400 z-50">
+    <div className="header bg-gray-50  sticky top-0 shadow-sm shadow-slate-200 z-50  dark:text-slate-200 dark:bg-slate-800">
       <div className="  flex items-center justify-between h-16 px-5  mx-auto max-w-7xl relative">
         <Link to="/">
           <AlgoNestLogo />
@@ -56,13 +60,14 @@ const Header = () => {
         <div className="flex items-center gap-5 h-full ">
           <div>
             {loggedIn ? (
-              <div className="flex gap-2 items-center w-fit overflow-hidden  bg-white  cursor-pointer group">
+              <div
+                onClick={(e) => {
+                  setOpenNavOption((prev) => !prev);
+                }}
+                className=" flex gap-2 items-center w-fit overflow-hidden   cursor-pointer transition-all duration-500"
+              >
                 <div
                   className=" h-10 w-10 bg-white shadow-sm  inline-block  hover:shadow-purple-400/50  rounded-full overflow-hidden"
-                  onClickCapture={(e) => {
-                    e.stopPropagation();
-                  }}
-                  onClick={(e) => setDarkMode((prev) => !prev)}
                   title="profile"
                 >
                   {profileData?.profilePic ? (
@@ -76,41 +81,55 @@ const Header = () => {
                   )}
                 </div>
                 <p className="text-semibold">Profile</p>
-                <div className="absolute top-16 -translate-y-[200%] group-hover:translate-y-[0] bg-gray-100/80 flex flex-col gap-1 px-4 py-2 rounded-b-lg overflow-hidden transition-transform duration-700">
-                  <div className="flex flex-col gap-3">
-                    <h1 className="font-semibold">Profile</h1>
-                    <hr />
-                    <div className="flex flex-col gap-1">
-                      <Link
-                        to={`profile`}
-                        className="hover:scale-95 transition-all duration-50"
-                      >
-                        My Profile
-                      </Link>
-                      <Link
-                        to={"my-learning"}
-                        className="hover:scale-95 transition-all duration-50"
-                      >
-                        My Learning
-                      </Link>
-
-                      <p
-                        onClick={handleLogout}
-                        className="hover:scale-95 transition-all duration-50 flex items-center gap-2"
-                      >
-                        Logout{" "}
-                        <span>
-                          <LuLogOut size={12} />
-                        </span>
-                      </p>
-                      {profileData?.userRole === "instructor" && (
+                <div
+                  className={`fixed w-40 top-16 ${
+                    openNavOption
+                      ? "translate-y-0 scale-100"
+                      : "-translate-y-100 scale-0"
+                  } transition duration-200`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setOpenNavOption(false);
+                  }}
+                >
+                  <div
+                    className={`bg-slate-200 backdrop-blur-sm dark:bg-slate-800 py-2 rounded-b-lg overflow-hidden  w-full`}
+                  >
+                    <div className="flex flex-col gap-3">
+                      <h1 className="font-semibold px-5">Profile</h1>
+                      <hr />
+                      <div className="flex flex-col ">
                         <Link
-                          to={"admin"}
-                          className="hover:scale-95 transition-all duration-50"
+                          to={`profile`}
+                          className="hover:scale-95 transition-all duration-100 hover:bg-purple-700 hover:text-slate-100 px-5 py-1 "
                         >
-                          Dashboard
+                          My Profile
                         </Link>
-                      )}
+                        <Link
+                          to={"my-learning"}
+                          className="hover:scale-95 transition-all duration-50 hover:bg-purple-700 hover:text-slate-100 px-5 py-1"
+                        >
+                          My Learning
+                        </Link>
+
+                        <p
+                          onClick={handleLogout}
+                          className="hover:scale-95 transition-all duration-50 flex items-center gap-2 hover:bg-purple-700  hover:text-slate-100 px-5 py-1"
+                        >
+                          Logout{" "}
+                          <span>
+                            <LuLogOut size={12} />
+                          </span>
+                        </p>
+                        {profileData?.userRole === "instructor" && (
+                          <Link
+                            to={"admin"}
+                            className="hover:scale-95 transition-all duration-50 hover:bg-purple-700  hover:text-slate-100 px-5 py-1"
+                          >
+                            Dashboard
+                          </Link>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -120,7 +139,7 @@ const Header = () => {
                 <NavLink to={"/auth"} state={{ login: true }}>
                   <Button
                     className={
-                      "!px-2 !py-1 text-gray-800  hover:bg-purple-500/80 hover:text-slate-50 transition-all duration-200"
+                      "!px-2 !py-1 text-gray-800 dark:text-slate-300 hover:bg-purple-500/80 hover:text-slate-50 transition-all duration-200"
                     }
                   >
                     Sign in
@@ -129,7 +148,7 @@ const Header = () => {
                 <NavLink to={"/auth"} state={{ login: false }}>
                   <Button
                     className={
-                      "!px-2 !py-1 text-gray-800 hover:bg-purple-500/80 hover:text-slate-50 transition-all duration-200"
+                      "!px-2 !py-1 text-gray-800 dark:text-slate-300 hover:bg-purple-500/80 hover:text-slate-50 transition-all duration-200"
                     }
                   >
                     Sign up
@@ -139,14 +158,8 @@ const Header = () => {
             )}
           </div>
           <div
-            className="p-2 shadow-lg  hover:shadow-purple-400/50  rounded-full cursor-pointer"
-            onClick={() => setDarkMode((prev) => !prev)}
-          >
-            {darkMode ? (
-              <FaSun size={20} className=" " />
-            ) : (
-              <FaMoon size={20} />
-            )}
+            className=" shadow-lg  hover:shadow-purple-400/50  rounded-full cursor-pointer">
+            <Switch toggleDarkMode={toggleDarkMode} />
           </div>
         </div>
       </div>

@@ -5,6 +5,8 @@ import dbConnect from './src/config/db.config.js'
 import cookieParser from 'cookie-parser'
 import userRouter from './src/routes/user.route.js'
 import courseRouter from './src/routes/course.route.js'
+import orderRouter from './src/routes/order.route.js'
+import lectureRouter from './src/routes/lecture.route.js'
 
 configDotenv({})
 
@@ -13,6 +15,7 @@ const app = express()
 
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser());
 
 const corsOptions = {
@@ -26,6 +29,8 @@ app.use(cors(corsOptions))
 
 app.use('/api/v1/user', userRouter)
 app.use('/api/v1/course', courseRouter)
+app.use('/api/v1/lecture', lectureRouter)
+app.use('/api/v1/order', orderRouter)
 
 app.use((req, res) => {
     res.send("<h1>This is backend part !</h1>")

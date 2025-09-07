@@ -72,12 +72,12 @@ const EditProfile = ({ close, userData }) => {
 
   return (
     <div
-      className={`fixed top-0 bottom-0 right-0 left-0 bg-neutral-600/60 z-50 flex items-center justify-center transition-all ${
+      className={`fixed top-0 bottom-0 right-0 left-0 bg-neutral-600/60 dark:bg-slate-800/60 dark:text-slate-300 z-50 flex items-center justify-center transition-all ${
         active ? "scale-100" : "scale-0"
-      } duration-300`}
+      } duration-300 `}
     >
       <div
-        className={`w-full mx-2 md:w-lg lg:w-xl bg-white rounded-lg shadow-purple-500/50 text-slate-800  overflow-hidden`}
+        className={`w-full mx-2 md:w-lg lg:w-xl bg-white dark:bg-slate-800 dark:text-slate-300 rounded-lg shadow-purple-500/50 text-slate-800  overflow-hidden dark:border dark:border-slate-300`}
       >
         <div className="flex items-center justify-between px-5 py-2 font-semibold">
           <h1>Edit Profile</h1>
@@ -89,14 +89,14 @@ const EditProfile = ({ close, userData }) => {
         </div>
         <hr />
         <form
-          className="py-10 grid gap-2 px-2 bg-slate-200"
+          className="py-10 grid gap-2 px-2 bg-inherit"
           onSubmit={handleUpdate}
         >
-          <div className="w-full px-5 py-2 rounded-lg">
-            <h1 className="font-semibold text-slate-700">Name : </h1>
+          <div className="w-full px-5 py-2 rounded-lg bg-slate-50 dark:bg-slate-800 dark:text-slate-300">
+            <h1 className="font-semibold text-inherit">Name : </h1>
             <input
               name="name"
-              className="mt-2 pl-5 font-medium text-slate-800 w-full outline-none bg-slate-50 px-3 py-1 rounded-full border border-purple-400"
+              className="mt-2 pl-5 font-medium text-inherit w-full outline-none   px-3 py-1 rounded-full border border-purple-400"
               value={updateData?.name}
               onChange={(e) => {
                 setUpdateData((prev) => {
@@ -108,11 +108,11 @@ const EditProfile = ({ close, userData }) => {
               }}
             />
           </div>
-          <div className="w-full px-5 py-2 rounded-lg">
-            <h1 className="font-semibold text-slate-700">Email :</h1>
+          <div className="w-full px-5 py-2 rounded-lg dark:bg-slate-800 dark:text-slate-200">
+            <h1 className="font-semibold ">Email :</h1>
             <input
               name="email"
-              className="mt-2 pl-5 font-medium text-slate-800  w-full outline-none bg-slate-50 px-3 py-1 rounded-full border border-purple-400"
+              className="mt-2 pl-5 font-medium  w-full outline-none  px-3 py-1 rounded-full border border-purple-400"
               value={updateData?.email}
               onChange={(e) => {
                 setUpdateData((prev) => {
@@ -126,7 +126,7 @@ const EditProfile = ({ close, userData }) => {
           </div>
           
           <div className="w-full px-5  py-2 rounded-lg ">
-            <h1 className="font-semibold text-slate-700">Profile Pic :</h1>
+            <h1 className="font-semibold ">Profile Pic :</h1>
 
             <div className="relative h-24 w-24 mt-4 rounded-full shadow-2xl shadow-purple-400 bg-purple-100 group overflow-hidden">
               <img

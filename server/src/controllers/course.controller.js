@@ -1,7 +1,8 @@
 import { Course } from '../models/course.model.js'
+import { Lecture } from '../models/lectures.model.js'
 import { User } from '../models/user.model.js'
 import asyncHandler from '../utils/AsyncHandler.js'
-import { deleteProfilePicFromCloudinary, uploadMediaImage } from '../utils/cloudinary.utils.js'
+import { deleteProfilePicFromCloudinary, uploadMediaImage, uploadMediaVideo } from '../utils/cloudinary.utils.js'
 import responseHandler from '../utils/Response.js'
 
 const createCourseController = asyncHandler(async (req, res) => {
@@ -219,6 +220,20 @@ const getCourseBySearch = asyncHandler(async (req, res) => {
     return responseHandler(res, 200, "Course fetched successfully !", searchResult, false)
 })
 
+const getCourseByEnrolledId = asyncHandler(async (req, res) => {
+    const userId = req.userId
+
+    const enrolledCourse = await Course.find({
+        enrolledStudent: userId
+    })
+
+    if (!enrolledCourse) {
+        return responseHandler(res, 200, "No purchase course exists !", {}, false)
+    }
+
+    return responseHandler(res, 200, "Course fetched successfully !", enrolledCourse, false)
+})
+
 export {
     createCourseController,
     getCourseController,
@@ -227,5 +242,6 @@ export {
     deleteCourseByIdController,
     getCourseByIdController,
     getCourseByCategory,
-    getCourseBySearch
+    getCourseBySearch,
+    getCourseByEnrolledId
 }
