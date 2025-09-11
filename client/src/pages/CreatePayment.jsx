@@ -131,7 +131,7 @@ const CheckoutCourse = () => {
             {course.description}
           </p>
           <div className="text-3xl font-semibold">
-            ₹{course.price.toLocaleString("en-IN")}
+            ₹{course.price?.toLocaleString("en-IN")}
           </div>
         </div>
 
@@ -142,7 +142,7 @@ const CheckoutCourse = () => {
           </h2>
           <div className="mb-4 flex justify-between text-purple-800 dark:text-slate-300">
             <span>Course Amount</span>
-            <span>₹{course.price.toLocaleString("en-IN")}</span>
+            <span>₹{course.price?.toLocaleString("en-IN")}</span>
           </div>
           <div className="mb-4 flex justify-between text-purple-800 dark:text-slate-300">
             <span>GST (18%)</span>
@@ -151,7 +151,7 @@ const CheckoutCourse = () => {
           <div className="mb-4 flex justify-between text-purple-800 dark:text-slate-300">
             <span>Discount</span>
             <span className="text-green-600 dark:text-purple-400">
-              - ₹{discount.toLocaleString("en-IN")}
+              - ₹{discount?.toLocaleString("en-IN")}
             </span>
           </div>
           <hr className="my-4 border-purple-300" />

@@ -4,6 +4,7 @@ import { User } from '../models/user.model.js'
 import asyncHandler from '../utils/AsyncHandler.js'
 import { deleteProfilePicFromCloudinary, uploadMediaImage, uploadMediaVideo } from '../utils/cloudinary.utils.js'
 import responseHandler from '../utils/Response.js'
+import fs from 'fs'
 
 const createCourseController = asyncHandler(async (req, res) => {
 
@@ -27,6 +28,9 @@ const createCourseController = asyncHandler(async (req, res) => {
     const cloudResponse = thumbnails?.path ? await uploadMediaImage(thumbnails.path) : ''
 
     const thumbnailUrl = thumbnails?.path ? cloudResponse.secure_url : ''
+    if (thumbnailUrl) {
+        fs.unlinkSync(thumbnails.path)
+    }
 
     const newCourse = await Course.create({
         courseTitle,
@@ -102,6 +106,9 @@ const updateCourseController = asyncHandler(async (req, res) => {
     const cloudResponse = thumbnails?.path ? await uploadMediaImage(thumbnails.path) : ''
 
     const thumbnailUrl = thumbnails?.path ? cloudResponse.secure_url : ''
+    if (thumbnailUrl) {
+        fs.unlinkSync(thumbnails.path)
+    }
 
     updateCourse = await Course.findByIdAndUpdate(courseId, {
         courseTitle,

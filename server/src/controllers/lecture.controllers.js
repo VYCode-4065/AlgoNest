@@ -4,6 +4,7 @@ import { User } from "../models/user.model.js"
 import asyncHandler from "../utils/AsyncHandler.js"
 import { deleteProfilePicFromCloudinary, deleteVideoFromCloudinary, uploadMediaImage, uploadMediaVideo } from "../utils/cloudinary.utils.js"
 import responseHandler from "../utils/Response.js"
+import fs from 'fs'
 
 const addLecturesToCourseController = asyncHandler(async (req, res) => {
     const userId = req.userId
@@ -43,6 +44,11 @@ const addLecturesToCourseController = asyncHandler(async (req, res) => {
 
     const videoUrl = cloudinaryVideo.secure_url
 
+
+
+    for (let file of req.files) {
+        fs.unlink(file.path)
+    }
 
 
 

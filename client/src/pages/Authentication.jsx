@@ -23,7 +23,7 @@ const Authentication = () => {
     setIsLogin(location.state?.login);
   }, [location.state]);
   return (
-    <div className="h-screen flex items-center gap-3 justify-center flex-col  pt- pb-3 px-5  transition-all duration-300 bg-gradient-to-tl from-blue-500 via-purple-500 to-purple-800">
+    <div className="h-screen flex items-center gap-3 justify-center flex-col  pt- pb-3 px-5  transition-all duration-300 bg-gradient-to-tr from-[hsl(278,96%,36%)] from-0% via-[#b50497] via-50% to-[#7900a5] to-100%">
       <div className="grid w-full">
         <div className="grid w-full  md:max-w-lg mx-auto gap-1  transition-all duration-500">
           {isLogin ? (

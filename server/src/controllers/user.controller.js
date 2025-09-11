@@ -4,6 +4,7 @@ import { deleteProfilePicFromCloudinary,  uploadMediaImage } from "../utils/clou
 import getSession from "../utils/getSession.js";
 import responseHandler from "../utils/Response.js";
 import bcrypt from 'bcryptjs'
+import fs from 'fs'
 
 const registerUserController = asyncHandler(async (req, res) => {
     const { name, email, password } = req.body;
@@ -130,6 +131,9 @@ const updateUserProfileController = asyncHandler(async (req, res) => {
 
     const profilePicUrl = profilePic ? cloudResponse.secure_url : ''
 
+    if(profilePicUrl){
+        fs.unlinkSync(profilePic.path)
+    }
 
     const updatedValue = await User.findByIdAndUpdate(userId, {
         email: email && email,

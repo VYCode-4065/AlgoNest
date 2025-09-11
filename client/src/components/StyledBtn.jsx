@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const StyledBtn = ({children}) => {
+const StyledBtn = ({ children }) => {
   return (
     <StyledWrapper>
       <button className="btn flex items-center gap-2">{children}</button>
@@ -17,11 +17,15 @@ const StyledWrapper = styled.div`
 
   .btn {
     min-width: 120px;
-    padding:0 15px;
+    padding: 0 15px;
     height: 40px;
     border-radius: 50px;
-    background-image: linear-gradient(135deg, #601498 8%, #ea5455 100%);
-    box-shadow: 0 20px 30px -6px rgba(238, 103, 97, 0.5);
+    background-image: linear-gradient(
+      76deg,
+      #180161 0%,
+      rgba(219, 15, 100, 1) 100%
+    );
+    box-shadow: 0 20px 30px -6px #180161;
     outline: none;
     cursor: pointer;
     border: none;

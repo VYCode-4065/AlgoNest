@@ -12,11 +12,15 @@ import { Markup } from "interweave";
 import { MdClose } from "react-icons/md";
 import toast from "react-hot-toast";
 import StyledBtn from "../components/StyledBtn";
+import Loader from "../components/Loader";
+import LoadingSpinner from "../components/LoadingSpin";
+import WhatsAppPlug from "../components/WhatsAppPlug";
 
 const Home = () => {
   const { data: coursesData, isLoading } = useGetAllCoursesQuery();
 
-  const [searchCourse, {}] = useSearchCourseMutation();
+  const [searchCourse, { isLoading: searchLoading }] =
+    useSearchCourseMutation();
   const [searchData, setSearchData] = useState("");
 
   const [searchResult, setSearchResult] = useState([]);
@@ -42,9 +46,9 @@ const Home = () => {
     }
   };
   return (
-    <div className="dark:bg-slate-800 dark:text-slate-300">
+    <div className="dark:bg-slate-800 dark:text-slate-300 relative">
       <div
-        className={`bg-gradient-to-r from-blue-800 via-purple-600 to-purple-700 dark:from-purple-800 dark:via-purple-700 dark:to-purple-900 text-slate-50 min-h-32 px-5 lg:px-10 py-10 md:py-16 text-center dark:bg-slate-800`}
+        className={`bg-gradient-to-tr from-[hsl(278,96%,36%)] from-0% via-[#b50497] via-50% to-[#7900a5] to-100%  text-slate-50 min-h-32 px-5 lg:px-10 py-10 md:py-16 text-center dark:bg-slate-800`}
       >
         <div className="inline-flex flex-col gap-5 lg:w-2xl items-center ">
           <h1 className="md:text-2xl lg:text-4xl font-semibold">
@@ -94,7 +98,16 @@ const Home = () => {
             <hr />
 
             <section className=" w-full  error section container text-purple-700 dark:text-slate-300  px-5 py-3 rounded ">
-              {searchResult.length > 0 ? (
+              {searchLoading ? (
+                <div className="mx-auto text-center">
+                  <div className="h-12 w-12 border-3 border-black border-t-pink-700 rounded-full animate-spin mx-auto "></div>
+                  <div>
+                    <h1 className="font-semibold my-5 animate-bounce text-lg">
+                      Searching course . Please wait....
+                    </h1>
+                  </div>
+                </div>
+              ) : searchResult.length > 0 ? (
                 <div className="w-full grid gap-5 py-10 md:px-5 max-h-screen overflow-y-auto transition-all duration-300">
                   {Array.isArray(searchResult) &&
                     searchResult?.map((course, idx) => {
@@ -159,24 +172,32 @@ const Home = () => {
           Our Courses
         </h1>
         <div className="grid md:grid-cols-3 lg:grid-cols-5 lg:gap-x-3 lg:gap-y-10 gap-2 py-10 md:px-2 lg:px-5">
-          {Array.isArray(coursesData?.data) &&
-            coursesData?.data?.map((course, idx) => {
-              if (idx >= 15) return;
-              return (
-                <Card
-                  name={course.courseTitle}
-                  subTitle={course.subTitle}
-                  imageLink={course.thumbnails}
-                  key={idx}
-                  courseId={course._id}
-                  author={course.courseCreator.name}
-                  authorImage={course.courseCreator.profilePic}
-                  level={course.courseLevel}
-                  price={course.coursePrice}
-                />
-              );
-            })}
+          {isLoading
+            ? Array(10)
+                .fill(1)
+                .map((_, idx) => {
+                  return <SkeletonCard />;
+                })
+            : coursesData?.data?.map((course, idx) => {
+                if (idx >= 15) return;
+                return (
+                  <Card
+                    name={course.courseTitle}
+                    subTitle={course.subTitle}
+                    imageLink={course.thumbnails}
+                    key={idx}
+                    courseId={course._id}
+                    author={course.courseCreator.name}
+                    authorImage={course.courseCreator.profilePic}
+                    level={course.courseLevel}
+                    price={course.coursePrice}
+                  />
+                );
+              })}
         </div>
+      </div>
+      <div className="absolute bottom-5 right-3 ">
+        <WhatsAppPlug />
       </div>
     </div>
   );

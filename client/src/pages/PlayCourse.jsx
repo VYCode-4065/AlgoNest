@@ -4,8 +4,11 @@ import { FaArrowLeft, FaShare } from "react-icons/fa";
 import { FaPlayCircle } from "react-icons/fa";
 import { FaUser } from "react-icons/fa6";
 import Comment from "../components/Comments";
+import { useLocation } from "react-router-dom";
 
 const PlayCourse = () => {
+  const location = useLocation();
+  const { title, courseId } = location?.state;
   const comments = [
     {
       avatarUrl: "https://i.pravatar.cc/100?img=1",
@@ -142,7 +145,7 @@ const PlayCourse = () => {
           />
           Back
         </button>
-        <h1 className=" text-lg font-bold">Operating System</h1>
+        <h1 className=" text-lg font-bold">{title}</h1>
       </div>
       <div className="grid lg:grid-cols-3 w-full h-full gap-10">
         <div className="play-lecture  lg:col-span-2 lg:max-h-[80vh] overflow-y-scroll">

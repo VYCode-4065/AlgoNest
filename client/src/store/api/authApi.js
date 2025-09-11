@@ -31,7 +31,8 @@ const authApi = createApi({
                 } catch (error) {
                     console.log('Error at RTK login ', error)
                 }
-            }
+            },
+            invalidatesTags: ['api']
         }),
         loggoutUser: builder.mutation({
             query: () => ({

@@ -53,10 +53,10 @@ const Login = ({ closeLogin }) => {
     }
   };
   return (
-    <div className=" border border-slate-300 backdrop-blur-lg w-full lg:min-w-lg shadow-lg shadow-slate-700  rounded-lg py-5 px-5 grid gap-5 text-gray-200">
-      <div className="px-2 flex flex-col gap-2 items-center">
+    <div className=" border border-slate-300 backdrop-blur-lg w-full lg:min-w-lg   rounded-lg py-5 px-5 grid gap-5 text-gray-200 hover:shadow-2xl hover:shadow-purple-800 duration-200">
+      <div className="px-2 flex flex-col gap-2 items-center ">
         <div className="bg-gray-50 h-12  w-12 rounded-full  inline-flex items-center justify-center">
-          <p className="inline-flex items-center justify-center bg-purple-600/50 h-3 max-w-fit px-1 py-3 text-white rounded-full ">
+          <p className="inline-flex items-center justify-center bg-purple-600 h-3 max-w-fit px-1 py-3 text-white rounded-full ">
             <FaCheck />
           </p>
         </div>

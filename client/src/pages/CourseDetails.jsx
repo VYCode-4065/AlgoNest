@@ -2,11 +2,19 @@ import React, { useEffect, useState } from "react";
 import { TbInfoOctagon } from "react-icons/tb";
 import { FaCirclePlay } from "react-icons/fa6";
 import Button from "../components/Button";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Markup } from "interweave";
-import { useGetCourseByIdMutation } from "../store/api/courseApi";
+import {
+  useGetByEnrolledIdQuery,
+  useGetCourseByIdMutation,
+} from "../store/api/courseApi";
 import LoadingSpinner from "../components/LoadingSpin";
 import testVideo from "../assets/videos/testVideo.mp4";
+import { useSelector } from "react-redux";
+import { getProfileData } from "../features/authSlice";
+import toast from "react-hot-toast";
+import StyledBtn2 from "../components/StyledBtn2";
+import StyledBtn from "../components/StyledBtn";
 
 const CourseDetails = () => {
   const [fetchCourse, { isLoading }] = useGetCourseByIdMutation();
@@ -32,6 +40,32 @@ const CourseDetails = () => {
       console.log("Error at fetch course");
     }
   };
+
+  const { data: purchasedCourseData, isLoading: enrollLoading } =
+    useGetByEnrolledIdQuery();
+
+  const [isPurchased, setIsPurchsed] = useState(false);
+
+  useEffect(() => {
+    const purchaseData = purchasedCourseData?.data;
+    const isPurchase =
+      Array.isArray(purchaseData) &&
+      purchaseData?.find((val) => val._id === courseData._id);
+    setIsPurchsed(isPurchase && true);
+  }, [isLoading, enrollLoading]);
+
+  const { user } = useSelector(getProfileData);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) {
+      setTimeout(() => {
+        toast.error("Login/Signup required !");
+        navigate("/auth");
+      }, 0);
+    }
+  }, []);
 
   useEffect(() => {
     handleFetchCourse();
@@ -129,13 +163,21 @@ const CourseDetails = () => {
                 <div className="font-bold py-2 px-5 grid gap-5  ">
                   <p>₹599</p>
                   <div className="py-5">
-                    <Link
-                      className="px-3 py-2 shadow-md rounded-full bg-purple-600 hover:bg-purple-700 dark:border dark:border-slate-300 text-slate-100 transition duration-200"
-                      to={"/checkout"}
-                      state={courseData}
-                    >
-                      Enroll In Course
-                    </Link>
+                    {isPurchased ? (
+                      <Link
+                        to={"/my-learning"}
+                        className="text-sm border px-5 py-2 rounded-full bg-gradient-to-br from-[#180161]  via-purple-800 via-40% from-0% to-[#DB0F64] to-100% shadow-lg shadow-pink-800 hover:shadow-none hover:scale-y-105 duration-300 transition-all"
+                      >
+                        Start Learning
+                      </Link>
+                    ) : (
+                      <Link to={"/checkout"} state={courseData}>
+                        <StyledBtn2
+                          firstVal={"Enroll Course"}
+                          secondVal={"Pay Now"}
+                        />
+                      </Link>
+                    )}
                   </div>
                 </div>
               </div>

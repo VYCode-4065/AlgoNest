@@ -8,9 +8,7 @@ const AlgoNestLogo = ({ textColor }) => {
       <MdSchool size={30} />
       {/* Brand Text */}
       <h1
-        className={`text-lg md:text-xl lg:text-2xl font-extrabold ${
-          textColor ? textColor : "text-purple-700"
-        } tracking-wide`}
+        className={`text-lg md:text-xl lg:text-2xl font-extrabold text-purple-500 dark:text-[#EB3678] tracking-wide`}
       >
         AlgoNest
       </h1>

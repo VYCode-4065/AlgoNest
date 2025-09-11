@@ -36,9 +36,9 @@ const SignUp = ({ openLogin }) => {
         email: "",
         password: "",
       });
-      if (isSuccess) {
+      if (res.data?.success) {
         openLogin(true);
-        return toast.success(signData.message);
+        return toast.success(res.data.message);
       }
 
       if (!res.data?.success) {
@@ -56,7 +56,7 @@ const SignUp = ({ openLogin }) => {
     });
   };
   return (
-    <div className=" bg-gradient-to-tl backdrop-blur-md w-full lg:min-w-lg shadow-lg shadow-slate-700 rounded-lg py-5 px-5 grid gap-5 text-slate-200 border border-slate-200">
+    <div className=" bg-gradient-to-tl backdrop-blur-md w-full lg:min-w-lg shadow-lg shadow-slate-700  hover:shadow-2xl hover:shadow-purple-800 duration-200 rounded-lg py-5 px-5 grid gap-5 text-slate-200 border border-slate-200">
       <div className="px-2 flex flex-col items-center gap-2 mx-auto text-center">
         <div className="bg-gray-100 h-12  w-12 rounded-full  inline-flex items-center justify-center">
           <p className="flex items-center justify-center bg-purple-600/50 h-3 max-w-fit px-1 py-3 text-white rounded-full">
@@ -175,6 +175,7 @@ const SignUp = ({ openLogin }) => {
         </p>
         <Button
           disabled={isLoading}
+          type="Submit"
           className={
             "my-5 w-full m-auto bg-purple-100 text-purple-900 hover:bg-purple-800 hover:text-purple-200 font-semibold px-10 transition-all duration-500"
           }
