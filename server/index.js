@@ -27,6 +27,8 @@ app.use('/api/v1/user', userRouter)
 app.use('/api/v1/course', courseRouter)
 app.use('/api/v1/lecture', lectureRouter)
 app.use('/api/v1/order', orderRouter)
+
+
 app.get("/health", (req, res) => {
     res.json({ status: "ok" });
 });
@@ -34,12 +36,12 @@ app.get('/', (req, res) => {
     res.send("<h1>This is backend part !</h1>")
 })
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT;
 
 console.log(process.env.PORT)
-dbConnect().then(() => {
-    app.listen(PORT, "0.0.0.0", () => {
-        console.log(`Server running at ${PORT} successfully !`);
-    });
-}
-)
+
+dbConnect()
+
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server running at ${PORT} successfully !`);
+});
