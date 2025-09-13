@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { loggedInUser, loggedOutUser } from '../../features/authSlice'
 
-const AUTH_BASE = "http://localhost:8080/api/v1/user/"
+const AUTH_BASE = "https://algonest-y8ai.onrender.com/api/v1/user/"
 const authApi = createApi({
     reducerPath: 'authApi',
     baseQuery: fetchBaseQuery({ baseUrl: AUTH_BASE, credentials: "include" }),

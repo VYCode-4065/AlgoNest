@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const LECTURE_BASE = 'http://localhost:8080/api/v1/lecture'
+const LECTURE_BASE = 'https://algonest-y8ai.onrender.com/api/v1/lecture'
 const lectureApi = createApi({
     reducerPath: 'lectureApi',
     baseQuery: fetchBaseQuery({ baseUrl: LECTURE_BASE, credentials: 'include' }),

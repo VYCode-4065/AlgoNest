@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const ORDER_BASE = 'http://localhost:8080/api/v1/order'
+const ORDER_BASE = 'https://algonest-y8ai.onrender.com/api/v1/order'
 const orderApi = createApi({
     reducerPath: 'orderApi',
     baseQuery: fetchBaseQuery({ baseUrl: ORDER_BASE, credentials: 'include' }),
