@@ -176,7 +176,7 @@ const Home = () => {
             ? Array(10)
                 .fill(1)
                 .map((_, idx) => {
-                  return <SkeletonCard />;
+                  return <SkeletonCard key={idx} />;
                 })
             : coursesData?.data?.map((course, idx) => {
                 if (idx >= 15) return;

@@ -106,7 +106,7 @@ const Profile = () => {
             <Button>Edit Profile</Button>
           </div>
         </div>
-        <div className="container md:hidden bg-purple-100 py-10 flex gap-3 items-center flex-col">
+        <div className="container md:hidden bg-purple-100 dark:bg-slate-800 dark:text-slate-300 py-10 flex gap-3 items-center flex-col">
           <h1 className="font-semibold border-b border-b-purple-500 w-full  text-center">
             Profile
           </h1>
@@ -122,26 +122,26 @@ const Profile = () => {
             {/* <FaUserAlt className="h-full w-full"/> */}
           </div>
           <div className="w-full px-5 text-sm">
-            <h1 className="font-semibold text-slate-700">Name</h1>
-            <h1 className="mt-2 pl-5 font-medium text-slate-800">
+            <h1 className="font-semibold text-slate-700 dark:text-slate-300">Name</h1>
+            <h1 className="mt-2 pl-5 font-medium text-slate-800 dark:text-slate-300">
               {profileData?.data?.name}
             </h1>
           </div>
           <div className="w-full px-5 text-sm">
-            <h1 className="font-semibold text-slate-700">Email</h1>
-            <h1 className="mt-2 pl-5 font-medium text-slate-800">
+            <h1 className="font-semibold text-slate-700 dark:text-slate-300">Email</h1>
+            <h1 className="mt-2 pl-5 font-medium text-slate-800 dark:text-slate-300">
               {profileData?.data?.email}
             </h1>
           </div>
           <div className="w-full px-5 text-sm">
-            <h1 className="font-semibold text-slate-700">Role</h1>
-            <h1 className="mt-2 pl-5 font-medium text-slate-800">
+            <h1 className="font-semibold text-slate-700 dark:text-slate-300">Role</h1>
+            <h1 className="mt-2 pl-5 font-medium text-slate-800 dark:text-slate-300">
               {profileData?.data?.userRole?.toUpperCase()}
             </h1>
           </div>
           <div className="w-full px-5 text-sm">
-            <h1 className="font-semibold text-slate-700">Course Enrolled</h1>
-            <h1 className="mt-2 pl-5 font-medium text-slate-800">
+            <h1 className="font-semibold text-slate-700 dark:text-slate-300">Course Enrolled</h1>
+            <h1 className="mt-2 pl-5 font-medium text-slate-800 dark:text-slate-300">
               You haven't enrolled in any course yet!
             </h1>
           </div>

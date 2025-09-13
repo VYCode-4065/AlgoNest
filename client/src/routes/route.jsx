@@ -14,6 +14,8 @@ import CreatePayment from "../pages/CreatePayment";
 import Lectures from "../admin/letcures/Lectures";
 import AddLecture from "../admin/letcures/AddLecture";
 import PlayCourse from "../pages/PlayCourse";
+import GoogleAuth from "../pages/GoogleAuth";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const router = createBrowserRouter([
   {

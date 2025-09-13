@@ -127,9 +127,9 @@ const CheckoutCourse = () => {
             />
           </div>
           <h1 className="text-4xl font-bold mb-4">{course.title}</h1>
-          <p className="mb-6 text-lg leading-relaxed line-clamp-2">
+          <div className="mb-6 text-lg leading-relaxed line-clamp-2">
             {course.description}
-          </p>
+          </div>
           <div className="text-3xl font-semibold">
             ₹{course.price?.toLocaleString("en-IN")}
           </div>

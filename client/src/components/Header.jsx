@@ -51,8 +51,18 @@ const Header = ({ isDarkMode, toggleDarkMode }) => {
     }
   };
 
+  document.addEventListener('click',()=>{
+    setOpenNavOption(false)
+  })
+
   return (
-    <div className="header bg-gray-50  sticky top-0 shadow-sm shadow-slate-200 z-50  dark:text-slate-200 dark:bg-slate-800">
+    <div
+      onClick={(e) => {
+        e.stopPropagation();
+        // setOpenNavOption(false);
+      }}
+      className="header bg-gray-50  sticky top-0 shadow-sm shadow-slate-200 z-50  dark:text-slate-200 dark:bg-slate-800"
+    >
       <div className="  flex items-center justify-between h-16 px-5  mx-auto max-w-7xl relative">
         <Link to="/">
           <AlgoNestLogo />
@@ -157,8 +167,7 @@ const Header = ({ isDarkMode, toggleDarkMode }) => {
               </div>
             )}
           </div>
-          <div
-            className=" shadow-lg  hover:shadow-purple-400/50  rounded-full cursor-pointer">
+          <div className=" shadow-lg  hover:shadow-purple-400/50  rounded-full cursor-pointer">
             <Switch toggleDarkMode={toggleDarkMode} />
           </div>
         </div>

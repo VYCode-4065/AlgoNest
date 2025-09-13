@@ -1,10 +1,11 @@
 import { User } from "../models/user.model.js";
 import asyncHandler from "../utils/AsyncHandler.js";
-import { deleteProfilePicFromCloudinary,  uploadMediaImage } from "../utils/cloudinary.utils.js";
+import { deleteProfilePicFromCloudinary, uploadMediaImage } from "../utils/cloudinary.utils.js";
 import getSession from "../utils/getSession.js";
 import responseHandler from "../utils/Response.js";
 import bcrypt from 'bcryptjs'
 import fs from 'fs'
+import { OAuth2Client } from 'google-auth-library'
 
 const registerUserController = asyncHandler(async (req, res) => {
     const { name, email, password } = req.body;
@@ -105,7 +106,7 @@ const updateUserProfileController = asyncHandler(async (req, res) => {
 
     const profilePic = req.file;
 
-  
+
 
 
     if (!userId) {
@@ -131,7 +132,7 @@ const updateUserProfileController = asyncHandler(async (req, res) => {
 
     const profilePicUrl = profilePic ? cloudResponse.secure_url : ''
 
-    if(profilePicUrl){
+    if (profilePicUrl) {
         fs.unlinkSync(profilePic.path)
     }
 
@@ -147,9 +148,60 @@ const updateUserProfileController = asyncHandler(async (req, res) => {
 
     return responseHandler(res, 200, "Profile updated successfully !", updatedValue, false)
 })
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)
+
+
+const loginWithGoogleController = asyncHandler(async (req, res) => {
+
+    const { clientToken } = req.body;
+    if (!clientToken) {
+        return responseHandler(res, 400, "clientToken is missing !")
+    }
+
+
+    const ticket = await client.verifyIdToken({
+        idToken: clientToken,
+        audience: process.env.GOOGLE_CLIENT_ID
+    })
+
+    const payload = ticket.getPayload()
+
+    const { sub: googleId, email, name, picture, email_verified } = payload;
+
+    if (!email_verified) {
+        return responseHandler(res, 400, "Google account email not verified")
+    }
+
+    let existedUser = await User.findOne({ email })
+
+    if (!existedUser) {
+        existedUser = await User.create({
+            name,
+            email,
+            profilePic: picture,
+            password: googleId
+        })
+    }
+    const sessionKey = await getSession(existedUser.email, existedUser._id)
+
+    const option = {
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000,
+        sameSite: 'strict',
+        secure: process.env.NODE_ENV === 'production'
+    }
+
+    res.cookie("loginToken", sessionKey, option);
+
+    existedUser.password = ""
+    return responseHandler(res, 200, "User logged in successfully !", existedUser, {}, { loginToken: sessionKey })
+
+})
 export {
     registerUserController,
     loginUserController,
+    loginWithGoogleController,
     logoutUserController,
     getUserProfileController,
     updateUserProfileController

@@ -34,6 +34,14 @@ const authApi = createApi({
             },
             invalidatesTags: ['api']
         }),
+        loginWithGoogle: builder.mutation({
+            query: (clientToken) => ({
+                url: `/google`,
+                method: 'POST',
+                body: { clientToken }
+            }),
+            invalidatesTags: ['api']
+        }),
         loggoutUser: builder.mutation({
             query: () => ({
                 url: 'logout',
@@ -81,6 +89,6 @@ const authApi = createApi({
 })
 
 
-export const { useLoginUserMutation, useRegisterUserMutation, useLoggoutUserMutation, useLoadProfileQuery, useUpdateProfileMutation } = authApi
+export const { useLoginUserMutation, useRegisterUserMutation, useLoggoutUserMutation, useLoadProfileQuery, useUpdateProfileMutation, useLoginWithGoogleMutation } = authApi
 
 export default authApi

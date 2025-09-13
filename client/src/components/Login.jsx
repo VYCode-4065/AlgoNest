@@ -3,15 +3,18 @@ import Button from "./Button";
 import toast from "react-hot-toast";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 import { useLoginUserMutation } from "../store/api/authApi";
-import { FaCheck } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { FaCheck, FaGoogle } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
 import ForgetPassword from "../pages/ForgetPassword";
+import GoogleAuth from "../pages/GoogleAuth";
+import { useGoogleLogin, useGoogleOAuth } from "@react-oauth/google";
 
 const Login = ({ closeLogin }) => {
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
   });
+
 
   const [forgetPassword, setForgetPassword] = useState(false);
 
@@ -52,6 +55,7 @@ const Login = ({ closeLogin }) => {
       return toast.error(error);
     }
   };
+
   return (
     <div className=" border border-slate-300 backdrop-blur-lg w-full lg:min-w-lg   rounded-lg py-5 px-5 grid gap-5 text-gray-200 hover:shadow-2xl hover:shadow-purple-800 duration-200">
       <div className="px-2 flex flex-col gap-2 items-center ">
@@ -137,11 +141,15 @@ const Login = ({ closeLogin }) => {
           type="submit"
           disabled={isLoading}
           className={
-            "w-full my-5 m-auto bg-purple-200 text-purple-700 hover:bg-purple-800 hover:text-white font-semibold px-10 border-2 border-purple-500 backdrop-blur-sm"
+            "w-full mt-3 mb-1 m-auto bg-purple-200 text-purple-700 hover:bg-purple-800 hover:text-white font-semibold px-10 border-2 border-purple-500 backdrop-blur-sm"
           }
         >
           {isLoading ? "Loading..." : "Sign in"}
         </Button>
+        <h1 className="text-center font-semibold ">OR</h1>
+        <div className="w-full my-2 flex justify-center">
+          <GoogleAuth />
+        </div>
         <p className="text-center">
           Don't have an account ?{" "}
           <span

@@ -14,7 +14,7 @@ const MyLearning = () => {
     <div className="bg-slate-200 px-10 py-5 md:h-screen dark:bg-slate-800 dark:text-slate-300">
       <div className="">
         <h1 className="text-2xl font-bold ">Course Enrolled</h1>
-        {courseData.length > 0 ? (
+        {courseData?.length > 0 ? (
           <div className="md:flex items-center gap-5">
             {courseData.map((courseVal, idx) => {
               return (

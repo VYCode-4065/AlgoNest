@@ -13,14 +13,14 @@ const Card = ({ imageUrl, title, description, courseId }) => {
           {title}
         </h5>
         <hr />
-        <p className="block font-sans text-base font-light leading-relaxed text-inherit antialiased">
+        <div className="block font-sans text-base font-light leading-relaxed text-inherit antialiased">
           {
             <Markup
               content={description}
               className="line-clamp-2 font-medium"
             />
           }
-        </p>
+        </div>
       </div>
       <Link
         state={{ title, courseId }}
