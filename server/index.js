@@ -8,7 +8,7 @@ import courseRouter from './src/routes/course.route.js'
 import orderRouter from './src/routes/order.route.js'
 import lectureRouter from './src/routes/lecture.route.js'
 
-configDotenv({})
+configDotenv({ override: true })
 
 const app = express()
 
@@ -39,5 +39,4 @@ dbConnect().then(() => {
         console.log(`Server running at ${PORT} successfully !`);
     });
 }
-
 )
