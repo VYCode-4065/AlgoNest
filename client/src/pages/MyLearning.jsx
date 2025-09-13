@@ -8,7 +8,7 @@ const MyLearning = () => {
 
   useEffect(() => {
     setCourseData(purchasedCourseData?.data);
-  }, [isLoading]);
+  }, [isLoading,purchasedCourseData]);
 
   return (
     <div className="bg-slate-200 px-10 py-5 md:h-screen dark:bg-slate-800 dark:text-slate-300">

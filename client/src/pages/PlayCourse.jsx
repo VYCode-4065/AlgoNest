@@ -185,7 +185,7 @@ const PlayCourse = () => {
             <h1 className="text-lg font-semibold">200 Comments :</h1>
             {comments.map((comment) => {
               return (
-                <div className="py-5 px-3">
+                <div key={comment.avatarUrl + "comment"} className="py-5 px-3">
                   <Comment
                     avatarUrl={comment.avatarUrl}
                     username={comment.username}
