@@ -33,7 +33,8 @@ app.use('/', (req, res) => {
 })
 
 dbConnect().then(() => {
-    const PORT = process.env.PORT || 3000;
+    const PORT = process.env.PORT;
+    
     app.listen(PORT, "0.0.0.0", () => {
         console.log(`Server running at ${PORT} successfully !`);
     });
