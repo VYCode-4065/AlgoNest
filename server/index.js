@@ -30,7 +30,7 @@ app.use('/api/v1/order', orderRouter)
 app.get("/health", (req, res) => {
     res.json({ status: "ok" });
 });
-app.use('/', (req, res) => {
+app.get('/', (req, res) => {
     res.send("<h1>This is backend part !</h1>")
 })
 
