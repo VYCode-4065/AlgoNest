@@ -28,12 +28,15 @@ app.use('/api/v1/course', courseRouter)
 app.use('/api/v1/lecture', lectureRouter)
 app.use('/api/v1/order', orderRouter)
 
-app.use((req, res) => {
+app.use('/', (req, res) => {
     res.send("<h1>This is backend part !</h1>")
 })
 
-dbConnect().then(() => app.listen(process.env.PORT || 3000, () => {
-    console.log(`Server running at ${process.env.PORT} successfully !`)
-})
+dbConnect().then(() => {
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, "0.0.0.0", () => {
+        console.log(`Server running at ${PORT} successfully !`);
+    });
+}
 
 )
