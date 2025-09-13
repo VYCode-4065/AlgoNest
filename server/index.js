@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser());
 
 const corsOptions = {
-    origin: ["http://localhost:5173"],
+    origin: ["http://localhost:5173", "https://algo-nest-hsc3.vercel.app"],
     credentials: true,
 };
 
@@ -32,9 +32,9 @@ app.use('/', (req, res) => {
     res.send("<h1>This is backend part !</h1>")
 })
 
+const PORT = process.env.PORT || 8080;
+
 dbConnect().then(() => {
-    const PORT = process.env.PORT;
-    
     app.listen(PORT, "0.0.0.0", () => {
         console.log(`Server running at ${PORT} successfully !`);
     });
