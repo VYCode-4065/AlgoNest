@@ -34,6 +34,7 @@ app.use('/', (req, res) => {
 
 const PORT = process.env.PORT || 8080;
 
+console.log(process.env.PORT)
 dbConnect().then(() => {
     app.listen(PORT, "0.0.0.0", () => {
         console.log(`Server running at ${PORT} successfully !`);
