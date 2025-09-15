@@ -4,11 +4,19 @@ import StyledCard from "../components/StyledCard";
 
 const MyLearning = () => {
   const [courseData, setCourseData] = useState([]);
-  const { data: purchasedCourseData, isLoading } = useGetByEnrolledIdQuery();
+  const {
+    data: purchasedCourseData,
+    isLoading,
+    refetch,
+  } = useGetByEnrolledIdQuery();
 
   useEffect(() => {
+    refetch();
+  }, []);
+  
+  useEffect(() => {
     setCourseData(purchasedCourseData?.data);
-  }, [isLoading,purchasedCourseData]);
+  }, [isLoading, purchasedCourseData]);
 
   return (
     <div className="bg-slate-200 px-10 py-5 md:h-screen dark:bg-slate-800 dark:text-slate-300">
