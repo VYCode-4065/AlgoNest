@@ -74,7 +74,13 @@ const logoutUserController = asyncHandler(async (req, res) => {
         return responseHandler(res, 401, "User not logged in ", {}, true)
     }
 
-    res.clearCookie("loginToken", { maxAge: 0 })
+    res.clearCookie("loginToken", {
+        httpOnly: true,
+        sameSite: "none",
+        secure: process.env.NODE_ENV === "production",
+        path: "/", 
+    });
+
 
     return responseHandler(res, 200, "User logged out successfully !")
 })
